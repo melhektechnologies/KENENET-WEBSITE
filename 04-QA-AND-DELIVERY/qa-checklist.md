@@ -1,67 +1,30 @@
-# Kenenet Website QA & Pre-Launch Checklist
+# Kenenét Consultancy — QA & Pre-Launch Checklist
 
-This document outlines the mandatory quality assurance checks required prior to public launch and client handover.
-
----
-
-## 1. Visual & Responsive Design
-- [ ] **Mobile Viewport (< 640px)**
-  - [ ] Hamburger / mobile navigation opens, closes, and navigates correctly
-  - [ ] No horizontal scrollbars or overflow issues
-  - [ ] Font sizes remain readable without manual zooming
-  - [ ] Touch targets (buttons, links) are at least 44x44px
-- [ ] **Tablet Viewport (768px - 1024px)**
-  - [ ] Multi-column grids wrap appropriately
-  - [ ] Hero layout and banner graphics scale properly
-- [ ] **Desktop & Ultra-wide (> 1200px)**
-  - [ ] Max-width constraints hold (no over-stretching across 1440p / 4k monitors)
-  - [ ] Layout alignment is centered and balanced
+**Based on:** Design System v1.0 §10.12, Content Validation Report v0.1, Website Strategy v1.0
 
 ---
 
-## 2. Cross-Browser & Device Compatibility
-- [ ] Google Chrome (latest)
-- [ ] Mozilla Firefox (latest)
-- [ ] Apple Safari (iOS & macOS)
-- [ ] Microsoft Edge (latest)
+## 1. Build & Content Integrity QA
+- [ ] **1. Verbatim Copy**: Every visible string matches *Website Copy v1.0* character for character.
+- [ ] **2. No Gated Leakage**: Zero `[CLIENT CONFIRMATION` strings or rejected spellings ("Kenent", "Kenenet" without accent) in rendered HTML.
+- [ ] **3. Clean Gated Layouts**: Blocked sections (e.g. unverified brochure services, unverified founder profile) remain completely absent with no empty cards, skeletons, or placeholder text.
+- [ ] **4. Logo Integrity**: Only the supplied original logo artwork is used; no recoloring, minimum clear space respected, accessible alt text "Kenenét Consultancy".
+- [ ] **5. Strict Orange Discipline**: Orange appears at most ONCE per viewport as a call-to-action or signal (with the sole exception of the Home hero headline full stop + primary CTA button). Never used as body text or large background fills.
+- [ ] **6. Accent Rendering**: "é" in "Kenenét" renders accurately across all loaded typefaces (Newsreader and Source Sans 3) at all responsive sizes.
 
 ---
 
-## 3. Performance & Core Web Vitals
-- [ ] **Lighthouse Performance Score >= 90**
-- [ ] **LCP (Largest Contentful Paint)** < 2.5s
-- [ ] **FID / INP (Interaction to Next Paint)** < 200ms
-- [ ] **CLS (Cumulative Layout Shift)** < 0.1
-- [ ] All images optimized (WebP / AVIF format with explicit `width` and `height` attributes)
-- [ ] CSS and JavaScript bundles minified and code-split
+## 2. Visual & Responsive Design (WCAG 2.1 AA)
+- [ ] **7. Mobile Viewport (320px - 360px)**: Zero horizontal scroll, touch targets minimum 44x44px, readable 17px minimum body size.
+- [ ] **8. Tablet Viewport (768px - 1023px)**: Clean wrapping, tablet navigation behavior verified.
+- [ ] **9. Desktop Viewport (1024px - 1440px+)**: Sticky header compression (80px to 64px), 12-column layout max 1240px content width.
+- [ ] **10. No-JS & Print**: All content fully readable with JavaScript disabled and in print preview.
+- [ ] **11. Reduced Motion**: `@media (prefers-reduced-motion: reduce)` disables hero entrance transitions, smooth scrolling, and accordion animations.
+- [ ] **12. Focus Rings**: Visible 2px solid ring with 2px offset (`#7F3293` on light surfaces, `#F9A21B` on dark surfaces).
 
 ---
 
-## 4. SEO & Meta Configuration
-- [ ] Dynamic or unique `<title>` and `<meta name="description">` on every page
-- [ ] Open Graph (`og:title`, `og:description`, `og:image`, `og:url`) configured for social sharing
-- [ ] Twitter Card meta tags present
-- [ ] Canonical URL tags (`<link rel="canonical">`) pointing to production domain
-- [ ] `robots.txt` configured correctly (not blocking production indexing)
-- [ ] Dynamic or static `sitemap.xml` generated and valid
-- [ ] Favicon, Apple Touch Icon, and Web Manifest present and verified
-
----
-
-## 5. Forms, Interactivity & Security
-- [ ] Contact form validates required fields (email format, message length)
-- [ ] Submitting form displays clear loading, success, and error states
-- [ ] Spam protection active (reCAPTCHA, Turnstile, or honeypot field)
-- [ ] Form notification emails successfully reach Kenenet operational inbox
-- [ ] SSL / HTTPS enforced globally with HSTS
-- [ ] External links include `rel="noopener noreferrer"` attributes
-- [ ] 404 Custom Error page implemented with a return-to-home button
-
----
-
-## 6. Accessibility (WCAG 2.1 AA)
-- [ ] Color contrast ratio is at least 4.5:1 for normal text and 3:1 for large text
-- [ ] All image assets have meaningful `alt` attributes
-- [ ] Site is navigable via Keyboard (`Tab`, `Enter`, `Escape`) with visible focus rings
-- [ ] Semantic HTML headings hierarchy (`<h1>` through `<h6>`) is strictly followed
-
+## 3. Performance & Delivery
+- [ ] **Lighthouse Mobile**: Performance >= 90, Accessibility 100, Best Practices >= 95, SEO 100.
+- [ ] **Core Web Vitals**: LCP <= 2.5s (Target <= 1.5s), CLS <= 0.05, INP <= 200ms.
+- [ ] **Security Headers**: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Strict-Transport-Security`.
