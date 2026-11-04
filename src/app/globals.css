@@ -59,6 +59,87 @@ body {
   outline-offset: 2px;
 }
 
+/* Keyframes for premium fluid transitions */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulseSlow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+.animate-hero-1 {
+  animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0s both;
+}
+
+.animate-hero-2 {
+  animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.09s both;
+}
+
+.animate-hero-3 {
+  animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+
+.animate-hero-4 {
+  animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.27s both;
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 2.5s ease-in-out infinite;
+}
+
+/* Skeleton shimmer utility */
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-mist);
+}
+
+.skeleton-shimmer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.6) 20%,
+    rgba(255, 255, 255, 0.8) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.8s infinite;
+  content: "";
+}
+
+/* Subtle editorial ambient background for hero */
+.bg-subtle-glow {
+  background-image: radial-gradient(circle at 10% 20%, rgba(127, 50, 147, 0.025) 0%, transparent 40%),
+                    radial-gradient(circle at 90% 80%, rgba(249, 162, 27, 0.02) 0%, transparent 35%);
+}
+
 /* Reduced motion accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -70,4 +151,3 @@ body {
     scroll-behavior: auto !important;
   }
 }
-

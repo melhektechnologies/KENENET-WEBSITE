@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { CheckCircle2, AlertCircle, Check, Shield, Info } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { contactData } from "@/data/contact";
 
@@ -11,6 +11,8 @@ export const ConsultationForm: React.FC = () => {
   const defaultInterest = searchParams?.get("interest") === "erp" ? "erp" : "general";
 
   const { form } = contactData;
+  const errorSummaryRef = useRef<HTMLDivElement>(null);
+
   const [formData, setFormData] = useState({
     fullName: "",
     organization: "",
@@ -23,8 +25,14 @@ export const ConsultationForm: React.FC = () => {
     website: "", // honeypot
   });
 
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [submittedRefNumber, setSubmittedRefNumber] = useState("");
+
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -38,6 +46,22 @@ export const ConsultationForm: React.FC = () => {
     }
   };
 
+  const isEmailValid = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const errors = {
+    fullName: !formData.fullName.trim() ? "Full name is required." : null,
+    organization: !formData.organization.trim() ? "Organization is required." : null,
+    email: !formData.email.trim()
+      ? "Email address is required."
+      : !isEmailValid(formData.email)
+      ? "Please provide a valid email address."
+      : null,
+    message: !formData.message.trim() ? "Message is required." : null,
+    consent: !formData.consent ? "Consent is required to submit." : null,
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -47,36 +71,67 @@ export const ConsultationForm: React.FC = () => {
       return;
     }
 
-    if (!formData.fullName || !formData.organization || !formData.email || !formData.message || !formData.consent) {
+    // Mark all as touched
+    setTouched({
+      fullName: true,
+      organization: true,
+      email: true,
+      message: true,
+      consent: true,
+    });
+
+    const hasErrors = Object.values(errors).some((err) => err !== null);
+
+    if (hasErrors) {
       setStatus("error");
       setErrorMessage("Please complete all required fields and accept the consent notice.");
+      setTimeout(() => {
+        errorSummaryRef.current?.focus();
+      }, 50);
       return;
     }
 
     setStatus("submitting");
 
-    // Simulate submission
+    // Simulate reliable submission
     setTimeout(() => {
+      const randomRef = `KEN-${Math.floor(100000 + Math.random() * 900000)}`;
+      setSubmittedRefNumber(randomRef);
       setStatus("success");
-    }, 800);
+    }, 900);
   };
 
   if (status === "success") {
     return (
       <div
-        className="bg-paper border border-line rounded p-8 sm:p-12 space-y-6 animate-in fade-in duration-300"
+        className="bg-paper border border-purple/30 rounded p-8 sm:p-12 space-y-6 animate-in fade-in duration-300 shadow-sm"
         role="status"
         aria-live="polite"
       >
-        <div className="flex items-center gap-3 text-success">
-          <CheckCircle2 className="w-8 h-8 stroke-[1.75]" />
-          <h2 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
-            {form.success.heading}
-          </h2>
+        <div className="flex items-start gap-4 text-success">
+          <div className="w-12 h-12 rounded bg-purple-100 flex items-center justify-center text-purple flex-shrink-0">
+            <CheckCircle2 className="w-7 h-7 stroke-[1.75]" />
+          </div>
+          <div className="space-y-1">
+            <h2 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
+              {form.success.heading}
+            </h2>
+            {submittedRefNumber && (
+              <p className="font-mono text-xs text-ink-600 tracking-wider uppercase">
+                Reference ID: <span className="font-semibold text-purple">{submittedRefNumber}</span>
+              </p>
+            )}
+          </div>
         </div>
+
         <p className="font-sans text-[17px] text-ink-600 leading-relaxed max-w-xl">
           {form.success.body}
         </p>
+
+        <div className="p-4 bg-mist border border-line rounded flex items-center gap-3 text-[14px] text-ink-600">
+          <Shield className="w-4 h-4 text-purple flex-shrink-0" />
+          <span>A confirmation will be directed to <strong className="text-ink">{formData.email}</strong>.</span>
+        </div>
       </div>
     );
   }
@@ -85,7 +140,7 @@ export const ConsultationForm: React.FC = () => {
     <form
       id={form.id}
       onSubmit={handleSubmit}
-      className="space-y-6 max-w-2xl"
+      className="space-y-6 max-w-2xl bg-paper"
       noValidate
     >
       {/* Honeypot */}
@@ -102,14 +157,20 @@ export const ConsultationForm: React.FC = () => {
         />
       </div>
 
+      {/* Accessible Error Summary */}
       {status === "error" && (
         <div
-          className="p-4 bg-mist border border-error rounded flex items-start gap-3 text-error"
+          ref={errorSummaryRef}
+          tabIndex={-1}
+          className="p-4 bg-mist border border-error rounded flex items-start gap-3 text-error focus:outline-none focus:ring-2 focus:ring-error"
           role="alert"
+          aria-labelledby="error-summary-title"
         >
           <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="font-sans font-semibold text-[15px]">{form.failure.heading}</p>
+            <p id="error-summary-title" className="font-sans font-semibold text-[15px]">
+              {form.failure.heading}
+            </p>
             <p className="font-sans text-[14px]">{errorMessage || form.failure.body}</p>
           </div>
         </div>
@@ -121,30 +182,74 @@ export const ConsultationForm: React.FC = () => {
           <label htmlFor="fullName" className="block font-sans text-[15px] font-semibold text-ink">
             {form.labels.fullName} <span className="text-purple">*</span>
           </label>
-          <input
-            type="text"
-            id="fullName"
-            name="fullName"
-            required
-            value={formData.fullName}
-            onChange={handleChange}
-            className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              required
+              disabled={status === "submitting"}
+              value={formData.fullName}
+              onBlur={() => handleBlur("fullName")}
+              onChange={handleChange}
+              aria-invalid={touched.fullName && Boolean(errors.fullName)}
+              aria-describedby={touched.fullName && errors.fullName ? "fullName-error" : undefined}
+              className={`w-full h-12 px-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
+                touched.fullName && errors.fullName
+                  ? "border-error focus:border-error focus:ring-error"
+                  : touched.fullName && formData.fullName
+                  ? "border-line pr-10 focus:border-purple"
+                  : "border-ink-400 focus:border-purple"
+              }`}
+            />
+            {touched.fullName && formData.fullName && !errors.fullName && (
+              <span className="absolute right-3 top-3.5 text-success">
+                <Check className="w-5 h-5 stroke-[2]" />
+              </span>
+            )}
+          </div>
+          {touched.fullName && errors.fullName && (
+            <p id="fullName-error" className="font-sans text-xs text-error mt-1 flex items-center gap-1">
+              <AlertCircle className="w-3.5 h-3.5 inline" /> {errors.fullName}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
           <label htmlFor="organization" className="block font-sans text-[15px] font-semibold text-ink">
             {form.labels.organization} <span className="text-purple">*</span>
           </label>
-          <input
-            type="text"
-            id="organization"
-            name="organization"
-            required
-            value={formData.organization}
-            onChange={handleChange}
-            className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              id="organization"
+              name="organization"
+              required
+              disabled={status === "submitting"}
+              value={formData.organization}
+              onBlur={() => handleBlur("organization")}
+              onChange={handleChange}
+              aria-invalid={touched.organization && Boolean(errors.organization)}
+              aria-describedby={touched.organization && errors.organization ? "organization-error" : undefined}
+              className={`w-full h-12 px-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
+                touched.organization && errors.organization
+                  ? "border-error focus:border-error focus:ring-error"
+                  : touched.organization && formData.organization
+                  ? "border-line pr-10 focus:border-purple"
+                  : "border-ink-400 focus:border-purple"
+              }`}
+            />
+            {touched.organization && formData.organization && !errors.organization && (
+              <span className="absolute right-3 top-3.5 text-success">
+                <Check className="w-5 h-5 stroke-[2]" />
+              </span>
+            )}
+          </div>
+          {touched.organization && errors.organization && (
+            <p id="organization-error" className="font-sans text-xs text-error mt-1 flex items-center gap-1">
+              <AlertCircle className="w-3.5 h-3.5 inline" /> {errors.organization}
+            </p>
+          )}
         </div>
       </div>
 
@@ -154,15 +259,37 @@ export const ConsultationForm: React.FC = () => {
           <label htmlFor="email" className="block font-sans text-[15px] font-semibold text-ink">
             {form.labels.email} <span className="text-purple">*</span>
           </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
-          />
+          <div className="relative">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              disabled={status === "submitting"}
+              value={formData.email}
+              onBlur={() => handleBlur("email")}
+              onChange={handleChange}
+              aria-invalid={touched.email && Boolean(errors.email)}
+              aria-describedby={touched.email && errors.email ? "email-error" : undefined}
+              className={`w-full h-12 px-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
+                touched.email && errors.email
+                  ? "border-error focus:border-error focus:ring-error"
+                  : touched.email && isEmailValid(formData.email)
+                  ? "border-line pr-10 focus:border-purple"
+                  : "border-ink-400 focus:border-purple"
+              }`}
+            />
+            {touched.email && isEmailValid(formData.email) && (
+              <span className="absolute right-3 top-3.5 text-success">
+                <Check className="w-5 h-5 stroke-[2]" />
+              </span>
+            )}
+          </div>
+          {touched.email && errors.email && (
+            <p id="email-error" className="font-sans text-xs text-error mt-1 flex items-center gap-1">
+              <AlertCircle className="w-3.5 h-3.5 inline" /> {errors.email}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -173,9 +300,10 @@ export const ConsultationForm: React.FC = () => {
             type="tel"
             id="phone"
             name="phone"
+            disabled={status === "submitting"}
             value={formData.phone}
             onChange={handleChange}
-            className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+            className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
           />
         </div>
       </div>
@@ -188,9 +316,10 @@ export const ConsultationForm: React.FC = () => {
         <select
           id="interest"
           name="interest"
+          disabled={status === "submitting"}
           value={formData.interest}
           onChange={handleChange}
-          className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+          className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple cursor-pointer"
         >
           {form.interestOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -215,53 +344,68 @@ export const ConsultationForm: React.FC = () => {
           name="message"
           required
           rows={5}
+          disabled={status === "submitting"}
           value={formData.message}
+          onBlur={() => handleBlur("message")}
           onChange={handleChange}
-          className="w-full p-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+          aria-invalid={touched.message && Boolean(errors.message)}
+          aria-describedby={touched.message && errors.message ? "message-error" : undefined}
+          className={`w-full p-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple resize-y min-h-[140px] ${
+            touched.message && errors.message
+              ? "border-error focus:border-error focus:ring-error"
+              : "border-ink-400 focus:border-purple"
+          }`}
         />
+        {touched.message && errors.message && (
+          <p id="message-error" className="font-sans text-xs text-error flex items-center gap-1">
+            <AlertCircle className="w-3.5 h-3.5 inline" /> {errors.message}
+          </p>
+        )}
       </div>
 
-      {/* Consent */}
-      <div className="flex items-start gap-3 pt-2">
-        <input
-          type="checkbox"
-          id="consent"
-          name="consent"
-          required
-          checked={formData.consent}
-          onChange={handleChange}
-          className="mt-1 w-4 h-4 text-purple border-ink-400 rounded focus:ring-purple"
-        />
-        <label htmlFor="consent" className="font-sans text-[14px] text-ink-600 leading-snug">
-          {form.labels.consent}
-        </label>
+      {/* Consent Checkbox */}
+      <div className="space-y-1 pt-2">
+        <div className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            id="consent"
+            name="consent"
+            required
+            disabled={status === "submitting"}
+            checked={formData.consent}
+            onBlur={() => handleBlur("consent")}
+            onChange={handleChange}
+            className="mt-1 w-4 h-4 text-purple border-ink-400 rounded focus:ring-purple cursor-pointer"
+          />
+          <label htmlFor="consent" className="font-sans text-[14px] text-ink-600 leading-snug cursor-pointer select-none">
+            {form.labels.consent}
+          </label>
+        </div>
+        {touched.consent && errors.consent && (
+          <p className="font-sans text-xs text-error pl-7 flex items-center gap-1">
+            <AlertCircle className="w-3.5 h-3.5 inline" /> {errors.consent}
+          </p>
+        )}
       </div>
 
       {/* Privacy note */}
-      <p className="font-sans text-[13px] text-ink-600">
-        {form.privacyLine}
-      </p>
+      <div className="flex items-center gap-2 text-[13px] font-sans text-ink-600 pt-1">
+        <Info className="w-4 h-4 text-purple flex-shrink-0" />
+        <p>{form.privacyLine}</p>
+      </div>
 
       {/* Submit Button */}
-      <div className="pt-2">
+      <div className="pt-3">
         <Button
           type="submit"
           variant="primary"
           size="lg"
-          disabled={status === "submitting"}
+          loading={status === "submitting"}
           className="w-full sm:w-auto"
         >
-          {status === "submitting" ? (
-            <span className="flex items-center gap-2">
-              <Loader2 className="w-5 h-5 animate-spin" />
-              {form.labels.submitting}
-            </span>
-          ) : (
-            form.labels.submit
-          )}
+          {status === "submitting" ? form.labels.submitting : form.labels.submit}
         </Button>
       </div>
     </form>
   );
 };
-
