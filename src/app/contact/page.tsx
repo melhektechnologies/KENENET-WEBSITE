@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageOpener } from "@/components/sections/PageOpener";
 import { ConsultationForm } from "@/components/forms/ConsultationForm";
 import { ConsultationFormSkeleton } from "@/components/ui/Skeleton";
-import { Heading } from "@/components/ui/Heading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { contactData } from "@/data/contact";
 import { ContentSlot } from "@/components/ui/Draft";

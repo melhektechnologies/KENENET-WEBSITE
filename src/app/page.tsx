@@ -17,8 +17,10 @@ export default function HomePage() {
       {/* H-1 Hero + H-2 Credibility */}
       <HomeHero />
 
-      {/* H-3 Statement */}
-      <StatementSection />
+      {/* H-3 Statement — proposed positioning is not yet client-approved */}
+      <Draft label="Draft — homepage positioning pending client approval" className="mx-5 my-8 sm:mx-8 lg:mx-12">
+        <StatementSection />
+      </Draft>
 
       {/* H-4 Services Overview + H-5 ERP */}
       <ServicesOverview />

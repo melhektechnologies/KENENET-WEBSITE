@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -13,7 +13,9 @@ import { cn } from "@/lib/utils";
 export const SiteHeader: React.FC = () => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuPath, setMobileMenuPath] = useState<string | null>(null);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuOpen = mobileMenuPath === pathname;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 16);
@@ -21,10 +23,6 @@ export const SiteHeader: React.FC = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [pathname]);
 
   const elevated = isScrolled || mobileMenuOpen;
 
@@ -88,9 +86,10 @@ export const SiteHeader: React.FC = () => {
           </div>
 
           <button
+            ref={menuTriggerRef}
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-paper/70 text-ink backdrop-blur-md transition-colors hover:border-purple/40 hover:text-purple lg:hidden"
-            onClick={() => setMobileMenuOpen((open) => !open)}
+            onClick={() => setMobileMenuPath((openPath) => (openPath === pathname ? null : pathname))}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -104,7 +103,11 @@ export const SiteHeader: React.FC = () => {
         </div>
       </header>
 
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuPath(null)}
+        triggerRef={menuTriggerRef}
+      />
     </>
   );
 };

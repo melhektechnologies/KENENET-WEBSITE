@@ -422,6 +422,8 @@ export const ConsultationForm: React.FC = () => {
             checked={formData.consent}
             onBlur={() => handleBlur("consent")}
             onChange={handleChange}
+            aria-invalid={touched.consent && Boolean(errors.consent)}
+            aria-describedby={touched.consent && errors.consent ? "consent-error" : undefined}
             className="mt-1 w-4 h-4 text-purple border-ink-400 rounded focus:ring-purple cursor-pointer"
           />
           <label htmlFor="consent" className="font-sans text-[14px] text-ink-600 leading-snug cursor-pointer select-none">
@@ -429,7 +431,7 @@ export const ConsultationForm: React.FC = () => {
           </label>
         </div>
         {touched.consent && errors.consent && (
-          <p className="font-sans text-xs text-error pl-7 flex items-center gap-1">
+          <p id="consent-error" className="font-sans text-xs text-error pl-7 flex items-center gap-1">
             <AlertCircle className="w-3.5 h-3.5 inline" /> {errors.consent}
           </p>
         )}
