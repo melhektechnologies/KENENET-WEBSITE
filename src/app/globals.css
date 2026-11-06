@@ -2,36 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Design-system CSS custom properties ──────────────────────────────── */
 :root {
-  /* Core brand colors (sampled from verified logo) */
-  --color-purple: #7F3293;
+  /* Brand colors */
+  --color-purple:     #7F3293;
   --color-purple-700: #662779;
   --color-purple-900: #2B1236;
   --color-purple-100: #ECE3F0;
 
-  --color-orange: #F9A21B;
+  --color-orange:     #F9A21B;
   --color-orange-600: #E08A00;
 
   /* Neutrals */
-  --color-ink: #1C1720;
+  --color-ink:     #1C1720;
   --color-ink-600: #5C5563;
   --color-ink-400: #8A8290;
 
-  --color-paper: #FCFBF9;
-  --color-mist: #F5F2F7;
-  --color-white: #FFFFFF;
-  --color-line: #E6E1E8;
-  --color-on-dark-muted: #C9BED0;
+  --color-paper:        #FCFBF9;
+  --color-mist:         #F5F2F7;
+  --color-white:        #FFFFFF;
+  --color-line:         #E6E1E8;
+  --color-on-dark-muted:#C9BED0;
 
   /* Functional */
-  --color-error: #B42318;
+  --color-error:   #B42318;
   --color-success: #1F7A4D;
 
-  /* Semantic mappings */
+  /* Semantic aliases used by layout & Tailwind config */
   --background: var(--color-paper);
   --foreground: var(--color-ink);
 }
 
+/* ─── Base element styles ───────────────────────────────────────────────── */
 html {
   scroll-padding-top: 96px;
   background-color: var(--background);
@@ -59,7 +61,7 @@ body {
   outline-offset: 2px;
 }
 
-/* Keyframes for premium fluid transitions */
+/* ─── Keyframes ─────────────────────────────────────────────────────────── */
 @keyframes heroFadeUp {
   from {
     opacity: 0;
@@ -72,75 +74,73 @@ body {
 }
 
 @keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%);  }
 }
 
 @keyframes pulseSlow {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.65;
-  }
+  0%, 100% { opacity: 1;    }
+  50%       { opacity: 0.65; }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Hero animation utilities ──────────────────────────────────────────── */
 .animate-hero-1 {
   animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0s both;
 }
-
 .animate-hero-2 {
   animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.09s both;
 }
-
 .animate-hero-3 {
   animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
 }
-
 .animate-hero-4 {
   animation: heroFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.27s both;
 }
-
 .animate-pulse-slow {
   animation: pulseSlow 2.5s ease-in-out infinite;
 }
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
 
-/* Skeleton shimmer utility */
+/* ─── Skeleton shimmer ──────────────────────────────────────────────────── */
 .skeleton-shimmer {
   position: relative;
   overflow: hidden;
   background-color: var(--color-mist);
 }
-
 .skeleton-shimmer::after {
+  content: "";
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   transform: translateX(-100%);
   background-image: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0)   0%,
     rgba(255, 255, 255, 0.6) 20%,
     rgba(255, 255, 255, 0.8) 60%,
-    rgba(255, 255, 255, 0)
+    rgba(255, 255, 255, 0)   100%
   );
   animation: shimmer 1.8s infinite;
-  content: "";
 }
 
-/* Subtle editorial ambient background for hero */
+/* ─── Ambient hero background ───────────────────────────────────────────── */
 .bg-subtle-glow {
-  background-image: radial-gradient(circle at 10% 20%, rgba(127, 50, 147, 0.025) 0%, transparent 40%),
-                    radial-gradient(circle at 90% 80%, rgba(249, 162, 27, 0.02) 0%, transparent 35%);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(127, 50, 147, 0.025) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(249, 162, 27, 0.02)  0%, transparent 35%);
 }
 
-/* Reduced motion accessibility */
+/* ─── Design-system colour utilities (used by layout & Tailwind classes) ── */
+.bg-paper  { background-color: var(--color-paper); }
+.text-ink  { color: var(--color-ink); }
+
+/* ─── Accessibility: reduced motion ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
