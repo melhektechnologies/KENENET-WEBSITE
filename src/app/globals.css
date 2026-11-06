@@ -28,6 +28,23 @@
   --color-error:   #B42318;
   --color-success: #1F7A4D;
 
+  /* RGB channels — enable opacity modifiers (bg-paper/80, border-purple/20…) */
+  --rgb-purple:        127 50 147;
+  --rgb-purple-700:    102 39 121;
+  --rgb-purple-900:    43 18 54;
+  --rgb-purple-100:    236 227 240;
+  --rgb-orange:        249 162 27;
+  --rgb-orange-600:    224 138 0;
+  --rgb-ink:           28 23 32;
+  --rgb-ink-600:       92 85 99;
+  --rgb-ink-400:       138 130 144;
+  --rgb-paper:         252 251 249;
+  --rgb-mist:          245 242 247;
+  --rgb-line:          230 225 232;
+  --rgb-on-dark-muted: 201 190 208;
+  --rgb-success:       31 122 77;
+  --rgb-error:         180 35 24;
+
   /* Semantic aliases used by layout & Tailwind config */
   --background: var(--color-paper);
   --foreground: var(--color-ink);
@@ -136,9 +153,52 @@ body {
     radial-gradient(circle at 90% 80%, rgba(249, 162, 27, 0.02)  0%, transparent 35%);
 }
 
+/* ─── Hero field: layered, restrained brand light ───────────────────────── */
+.bg-hero-field {
+  background-image:
+    radial-gradient(58% 52% at 90% 6%,  rgba(127, 50, 147, 0.11) 0%, rgba(127, 50, 147, 0) 70%),
+    radial-gradient(42% 42% at 4% 98%,  rgba(249, 162, 27, 0.09) 0%, rgba(249, 162, 27, 0) 70%),
+    linear-gradient(180deg, rgba(245, 242, 247, 0) 62%, rgba(245, 242, 247, 0.75) 100%);
+}
+
+/* ─── Frosted panel (light-mode glass) ──────────────────────────────────── */
+.glass-panel {
+  background-color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(127, 50, 147, 0.14);
+}
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass-panel {
+    background-color: rgba(255, 255, 255, 0.62);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel {
+    background-color: #ffffff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 /* ─── Design-system colour utilities (used by layout & Tailwind classes) ── */
 .bg-paper  { background-color: var(--color-paper); }
 .text-ink  { color: var(--color-ink); }
+
+/* ─── Scroll-driven reveal ───────────────────────────────────────────────
+   Progressive enhancement: browsers without animation-timeline simply show
+   the content. No JavaScript, no layout shift, no hidden-until-JS flash. */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: revealUp linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 45%;
+  }
+}
 
 /* ─── Accessibility: reduced motion ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
@@ -150,4 +210,5 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
 }

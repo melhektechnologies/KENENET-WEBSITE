@@ -12,27 +12,27 @@ const config: Config = {
       colors: {
         background:      "var(--background)",
         foreground:      "var(--foreground)",
-        paper:           "var(--color-paper)",
-        mist:            "var(--color-mist)",
+        paper:           "rgb(var(--rgb-paper) / <alpha-value>)",
+        mist:            "rgb(var(--rgb-mist) / <alpha-value>)",
         ink: {
-          DEFAULT: "var(--color-ink)",
-          600:     "var(--color-ink-600)",
-          400:     "var(--color-ink-400)",
+          DEFAULT: "rgb(var(--rgb-ink) / <alpha-value>)",
+          600:     "rgb(var(--rgb-ink-600) / <alpha-value>)",
+          400:     "rgb(var(--rgb-ink-400) / <alpha-value>)",
         },
         purple: {
-          DEFAULT: "var(--color-purple)",
-          100:     "var(--color-purple-100)",
-          700:     "var(--color-purple-700)",
-          900:     "var(--color-purple-900)",
+          DEFAULT: "rgb(var(--rgb-purple) / <alpha-value>)",
+          100:     "rgb(var(--rgb-purple-100) / <alpha-value>)",
+          700:     "rgb(var(--rgb-purple-700) / <alpha-value>)",
+          900:     "rgb(var(--rgb-purple-900) / <alpha-value>)",
         },
         orange: {
-          DEFAULT: "var(--color-orange)",
-          600:     "var(--color-orange-600)",
+          DEFAULT: "rgb(var(--rgb-orange) / <alpha-value>)",
+          600:     "rgb(var(--rgb-orange-600) / <alpha-value>)",
         },
-        line:           "var(--color-line)",
-        "on-dark-muted":"var(--color-on-dark-muted)",
-        success:        "var(--color-success)",
-        error:          "var(--color-error)",
+        line:            "rgb(var(--rgb-line) / <alpha-value>)",
+        "on-dark-muted": "rgb(var(--rgb-on-dark-muted) / <alpha-value>)",
+        success:         "rgb(var(--rgb-success) / <alpha-value>)",
+        error:           "rgb(var(--rgb-error) / <alpha-value>)",
       },
 
       /* ── Typography ─────────────────────────────────────── */
@@ -47,6 +47,22 @@ const config: Config = {
         container: "1240px",
         page:      "1336px",
         narrow:    "760px",
+      },
+
+      /* ── Elevation (purple-tinted, never pure black) ───── */
+      boxShadow: {
+        cta:
+          "inset 0 1px 0 rgba(255,255,255,0.38), 0 1px 2px rgba(43,18,54,0.22), 0 10px 22px -8px rgba(249,162,27,0.55)",
+        "cta-hover":
+          "inset 0 1px 0 rgba(255,255,255,0.45), 0 2px 4px rgba(43,18,54,0.22), 0 16px 30px -8px rgba(249,162,27,0.65)",
+        brand:
+          "inset 0 1px 0 rgba(255,255,255,0.14), 0 1px 2px rgba(43,18,54,0.25), 0 10px 22px -10px rgba(127,50,147,0.60)",
+        "brand-hover":
+          "inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 4px rgba(43,18,54,0.25), 0 16px 30px -10px rgba(127,50,147,0.70)",
+        panel:
+          "inset 0 1px 0 rgba(255,255,255,0.90), 0 2px 6px rgba(43,18,54,0.05), 0 28px 56px -28px rgba(43,18,54,0.30)",
+        lift:
+          "inset 0 1px 0 rgba(255,255,255,0.80), 0 14px 34px -18px rgba(43,18,54,0.28)",
       },
 
       /* ── Motion ─────────────────────────────────────────── */
