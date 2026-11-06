@@ -6,21 +6,25 @@ export const aboutData = {
   },
   whoWeAre: {
     heading: "Who we are",
+    // Verified (client-confirmed positioning)
     paragraphs: [
-      "Kenenét Consultancy is an Ethiopian organizational and management consultancy. In plain terms, a consultancy like ours helps leadership teams examine how their organization actually works, decide what needs to change, and put those decisions into practice.",
+      "Kenenét Consultancy is an Ethiopian organizational and management consultancy. Our focus is organizational excellence for sustainable change.",
+    ],
+    // Unverified descriptive copy — hidden in production until approved
+    draftParagraphs: [
+      "In plain terms, a consultancy like ours helps leadership teams examine how their organization actually works, decide what needs to change, and put those decisions into practice.",
     ],
   },
   erpNote: {
     heading: "Technology and organizational change",
-    body: "Where technology is part of the answer, we partner with an established technology provider to deliver ERP solutions, while Kenenét Consultancy focuses on the organizational readiness, workflow alignment, and operational transition needed to make the system succeed.",
+    body: "ERP solutions are provided through our technology partner, with Kenenét Consultancy providing implementation support.",
   },
   closing: {
     heading: "Work with Kenenét.",
-    body: "Let's discuss where your organization is today and what you want to achieve.",
+    body: "Let\u2019s discuss where your organization is today and what you want to achieve.",
     primaryCta: {
       label: "Request a Consultation",
       href: "/contact#consultation-form",
     },
   },
 };
-

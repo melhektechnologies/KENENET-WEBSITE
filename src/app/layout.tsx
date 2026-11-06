@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { siteConfig } from "@/data/site";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -18,14 +19,27 @@ const sourceSans3 = Source_Sans_3({
   display: "swap",
 });
 
+const site = getSiteUrl();
+
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
+  applicationName: siteConfig.brandName,
   title: {
     default: `${siteConfig.brandName} — ${siteConfig.tagline}`,
     template: `%s — ${siteConfig.brandName}`,
   },
   description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
-  icons: {
-    icon: "/logo/kenenet_consultancy_logo_transparent.png",
+  alternates: { canonical: "./" },
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.brandName,
+    title: `${siteConfig.brandName} — ${siteConfig.tagline}`,
+    description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.brandName} — ${siteConfig.tagline}`,
+    description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
   },
 };
 
@@ -43,11 +57,13 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Kenenét Consultancy",
-    tagline: "Transforming Workplaces.",
-    description: "Ethiopian organizational and management consultancy. Organizational excellence for sustainable change.",
-    url: "https://kenenet.com",
-    logo: "https://kenenet.com/logo/kenenet_consultancy_logo_transparent.png",
+    name: siteConfig.brandName,
+    slogan: siteConfig.tagline,
+    description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
+    ...(site.isConfigured && {
+      url: site.url,
+      logo: `${site.url}/logo/kenenet_consultancy_logo_transparent.png`,
+    }),
   };
 
   return (
@@ -58,7 +74,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-paper text-ink antialiased">

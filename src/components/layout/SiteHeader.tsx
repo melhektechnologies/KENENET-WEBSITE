@@ -27,10 +27,10 @@ export const SiteHeader: React.FC = () => {
     <>
       <header
         className={cn(
-          "sticky top-0 z-30 w-full bg-paper transition-all duration-200 border-b",
+          "sticky top-0 z-30 w-full border-b transition-[height,background-color,box-shadow,border-color] duration-300 ease-emphasis",
           isScrolled
-            ? "h-16 border-line shadow-[0_1px_0_0_#E6E1E8]"
-            : "h-20 border-transparent"
+            ? "h-16 border-line bg-paper/95 supports-[backdrop-filter]:bg-paper/75 backdrop-blur-xl backdrop-saturate-150 shadow-[0_8px_24px_-14px_rgba(43,18,54,0.18)]"
+            : "h-20 border-transparent bg-paper"
         )}
       >
         <div className="max-w-[1336px] mx-auto h-full px-5 sm:px-8 lg:px-12 flex items-center justify-between">
@@ -105,6 +105,7 @@ export const SiteHeader: React.FC = () => {
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
+        isScrolled={isScrolled}
       />
     </>
   );

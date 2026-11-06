@@ -4,6 +4,8 @@ import { PageOpener } from "@/components/sections/PageOpener";
 import { ClosingBand } from "@/components/sections/ClosingBand";
 import { Heading } from "@/components/ui/Heading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Draft, ContentSlot } from "@/components/ui/Draft";
+import { showDrafts } from "@/lib/content-status";
 import { aboutData } from "@/data/about";
 
 export const metadata: Metadata = {
@@ -39,10 +41,29 @@ export default function AboutPage() {
                   {p}
                 </p>
               ))}
+              <Draft>
+                {whoWeAre.draftParagraphs.map((p, idx) => (
+                  <p key={idx} className="font-sans text-[17px] text-ink-600 leading-relaxed max-w-2xl">
+                    {p}
+                  </p>
+                ))}
+              </Draft>
+              <ContentSlot label="Company background: founding, location, focus, origin" gate="E-11 · G1" />
             </div>
           </div>
         </div>
       </section>
+
+      {/* Mission, vision, values, leadership — verified content only (hidden in production until supplied) */}
+      {showDrafts() && (
+      <section className="w-full bg-paper py-12 border-b border-line">
+        <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12 space-y-4">
+          <ContentSlot label="Mission and vision, verbatim from the approved source" gate="E-09 · G1" />
+          <ContentSlot label="Core values" gate="E-09 · G1" />
+          <ContentSlot label="Leadership: founder name, title, biography, photo with consent" gate="E-10 · G5" />
+        </div>
+      </section>
+      )}
 
       {/* Technology & Organizational Change */}
       <section className="w-full bg-mist py-16 md:py-24 border-b border-line">

@@ -1,0 +1,379 @@
+diff --git a/src/app/globals.css b/src/app/globals.css
+index 884e3a9..d7dbfae 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -28,6 +28,23 @@
+   --color-error:   #B42318;
+   --color-success: #1F7A4D;
+ 
++  /* RGB channels — enable opacity modifiers (bg-paper/80, border-purple/20…) */
++  --rgb-purple:        127 50 147;
++  --rgb-purple-700:    102 39 121;
++  --rgb-purple-900:    43 18 54;
++  --rgb-purple-100:    236 227 240;
++  --rgb-orange:        249 162 27;
++  --rgb-orange-600:    224 138 0;
++  --rgb-ink:           28 23 32;
++  --rgb-ink-600:       92 85 99;
++  --rgb-ink-400:       138 130 144;
++  --rgb-paper:         252 251 249;
++  --rgb-mist:          245 242 247;
++  --rgb-line:          230 225 232;
++  --rgb-on-dark-muted: 201 190 208;
++  --rgb-success:       31 122 77;
++  --rgb-error:         180 35 24;
++
+   /* Semantic aliases used by layout & Tailwind config */
+   --background: var(--color-paper);
+   --foreground: var(--color-ink);
+@@ -136,6 +153,34 @@ body {
+     radial-gradient(circle at 90% 80%, rgba(249, 162, 27, 0.02)  0%, transparent 35%);
+ }
+ 
++/* ─── Hero field: layered, restrained brand light ───────────────────────── */
++.bg-hero-field {
++  background-image:
++    radial-gradient(58% 52% at 90% 6%,  rgba(127, 50, 147, 0.11) 0%, rgba(127, 50, 147, 0) 70%),
++    radial-gradient(42% 42% at 4% 98%,  rgba(249, 162, 27, 0.09) 0%, rgba(249, 162, 27, 0) 70%),
++    linear-gradient(180deg, rgba(245, 242, 247, 0) 62%, rgba(245, 242, 247, 0.75) 100%);
++}
++
++/* ─── Frosted panel (light-mode glass) ──────────────────────────────────── */
++.glass-panel {
++  background-color: rgba(255, 255, 255, 0.92);
++  border: 1px solid rgba(127, 50, 147, 0.14);
++}
++@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
++  .glass-panel {
++    background-color: rgba(255, 255, 255, 0.62);
++    -webkit-backdrop-filter: blur(20px) saturate(140%);
++    backdrop-filter: blur(20px) saturate(140%);
++  }
++}
++@media (prefers-reduced-transparency: reduce) {
++  .glass-panel {
++    background-color: #ffffff;
++    -webkit-backdrop-filter: none;
++    backdrop-filter: none;
++  }
++}
++
+ /* ─── Design-system colour utilities (used by layout & Tailwind classes) ── */
+ .bg-paper  { background-color: var(--color-paper); }
+ .text-ink  { color: var(--color-ink); }
+diff --git a/src/components/layout/SiteHeader.tsx b/src/components/layout/SiteHeader.tsx
+index 5d2bc03..4a15bc6 100644
+--- a/src/components/layout/SiteHeader.tsx
++++ b/src/components/layout/SiteHeader.tsx
+@@ -27,10 +27,10 @@ export const SiteHeader: React.FC = () => {
+     <>
+       <header
+         className={cn(
+-          "sticky top-0 z-30 w-full bg-paper transition-all duration-200 border-b",
++          "sticky top-0 z-30 w-full border-b transition-[height,background-color,box-shadow,border-color] duration-300 ease-emphasis",
+           isScrolled
+-            ? "h-16 border-line shadow-[0_1px_0_0_#E6E1E8]"
+-            : "h-20 border-transparent"
++            ? "h-16 border-line bg-paper/95 supports-[backdrop-filter]:bg-paper/75 backdrop-blur-xl backdrop-saturate-150 shadow-[0_8px_24px_-14px_rgba(43,18,54,0.18)]"
++            : "h-20 border-transparent bg-paper"
+         )}
+       >
+         <div className="max-w-[1336px] mx-auto h-full px-5 sm:px-8 lg:px-12 flex items-center justify-between">
+diff --git a/src/components/sections/ClosingBand.tsx b/src/components/sections/ClosingBand.tsx
+index 4d302f1..340b042 100644
+--- a/src/components/sections/ClosingBand.tsx
++++ b/src/components/sections/ClosingBand.tsx
+@@ -25,7 +25,13 @@ export const ClosingBand: React.FC<ClosingBandProps> = ({
+   secondaryCta,
+ }) => {
+   return (
+-    <section className="w-full bg-purple-900 text-paper py-20 lg:py-28">
++    <section className="relative isolate w-full overflow-hidden bg-purple-900 py-20 text-paper lg:py-28">
++      {/* Restrained ambient light — decorative only */}
++      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
++        <div className="absolute -right-32 -top-40 h-[30rem] w-[30rem] rounded-full bg-purple/45 blur-3xl" />
++        <div className="absolute -bottom-52 -left-24 h-[26rem] w-[26rem] rounded-full bg-orange/10 blur-3xl" />
++        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-paper/25 to-transparent" />
++      </div>
+       <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
+         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+           <div className="lg:col-span-7">
+diff --git a/src/components/sections/ErpBand.tsx b/src/components/sections/ErpBand.tsx
+index dc631df..bf7eeb7 100644
+--- a/src/components/sections/ErpBand.tsx
++++ b/src/components/sections/ErpBand.tsx
+@@ -17,7 +17,11 @@ export const ErpBand: React.FC = () => {
+           </div>
+ 
+           {/* Panel on right (Columns 5-12) */}
+-          <div className="lg:col-span-8 bg-mist border border-line rounded p-8 sm:p-12 space-y-6">
++          <div className="relative overflow-hidden rounded border border-line bg-mist p-8 shadow-lift sm:p-12 lg:col-span-8 space-y-6">
++            <span
++              className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple via-purple to-orange"
++              aria-hidden="true"
++            />
+             <Heading as="h2" variant="heading-xl">
+               {erpBand.heading}
+             </Heading>
+diff --git a/src/components/sections/HomeHero.tsx b/src/components/sections/HomeHero.tsx
+index f87a33d..34b1ec1 100644
+--- a/src/components/sections/HomeHero.tsx
++++ b/src/components/sections/HomeHero.tsx
+@@ -1,62 +1,81 @@
+ import React from "react";
+ import { Button } from "@/components/ui/Button";
+ import { homeData } from "@/data/home";
+-import { ShieldCheck, Clock } from "lucide-react";
++import { siteConfig } from "@/data/site";
+ 
++/**
++ * H-1 Hero
++ * Only verified content is rendered here: tagline, supporting line,
++ * category, and the approved descriptor. No unverified trust claims.
++ */
+ export const HomeHero: React.FC = () => {
+   const { hero } = homeData;
+ 
+   return (
+-    <section className="relative w-full bg-paper bg-subtle-glow pt-12 md:pt-20 lg:pt-28 pb-16 md:pb-24 border-b border-line overflow-hidden">
+-      <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
+-        {/* Category Trust Signal */}
+-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100/80 border border-purple/20 rounded text-[12px] sm:text-[13px] font-sans font-semibold tracking-[0.08em] text-purple uppercase mb-6 animate-hero-1">
+-          <span className="w-1.5 h-1.5 rounded-full bg-purple" aria-hidden="true" />
+-          <span>Organizational &amp; Management Advisory</span>
+-        </div>
++    <section
++      aria-labelledby="home-hero-heading"
++      className="relative isolate w-full overflow-hidden border-b border-line bg-paper bg-hero-field pt-14 pb-20 md:pt-20 md:pb-28 lg:pt-28 lg:pb-32"
++    >
++      <div className="relative z-10 mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
++        {/* Verified category line */}
++        <p className="mb-8 inline-flex items-center gap-3 font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-purple sm:text-[13px] animate-hero-1">
++          <span className="h-px w-8 bg-purple" aria-hidden="true" />
++          {siteConfig.category}
++        </p>
+ 
+-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+-          {/* Signature Headline (Columns 1-7) */}
++        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-10">
++          {/* Signature headline */}
+           <div className="lg:col-span-7">
+-            <h1 className="font-serif text-[clamp(3.1rem,2.2rem+4.5vw,6.25rem)] leading-[0.98] tracking-[-0.02em] text-ink overflow-visible">
+-              <span className="block font-normal animate-hero-1">{hero.headlineWord1}</span>
+-              <span className="block font-normal italic text-purple animate-hero-2">
++            <h1
++              id="home-hero-heading"
++              className="font-serif text-[clamp(3.1rem,2.2rem+4.5vw,6.25rem)] font-normal leading-[0.98] tracking-[-0.025em] text-ink"
++            >
++              <span className="block animate-hero-1">{hero.headlineWord1}</span>
++              <span className="block italic text-purple animate-hero-2">
+                 {hero.headlineWord2}
+-                <span className="text-orange not-italic">.</span>
++                {/* Decorative accent; the sentence still reads correctly without it */}
++                <span className="not-italic text-orange" aria-hidden="true">
++                  .
++                </span>
+               </span>
+             </h1>
+           </div>
+ 
+-          {/* Supporting Copy & CTAs (Columns 8-12) */}
+-          <div className="lg:col-span-5 lg:pt-3 space-y-6 animate-hero-3">
+-            <p className="font-serif text-[clamp(1.35rem,1.25rem+0.5vw,1.75rem)] text-ink leading-snug">
+-              {hero.supportingLine}
+-            </p>
+-            <p className="font-sans text-[17px] sm:text-[18px] text-ink-600 leading-relaxed max-w-xl">
+-              {hero.descriptor}
+-            </p>
++          {/* Frosted action panel — offset lower for an asymmetric break */}
++          <div className="lg:col-span-5 lg:mt-24 animate-hero-3">
++            <div className="glass-panel rounded p-7 shadow-panel sm:p-9">
++              <p className="font-serif text-[clamp(1.35rem,1.25rem+0.5vw,1.75rem)] leading-snug text-ink [text-wrap:balance]">
++                {hero.supportingLine}
++              </p>
++
++              <span
++                className="mt-5 block h-[2px] w-12 bg-gradient-to-r from-purple to-orange"
++                aria-hidden="true"
++              />
++
++              <p className="mt-5 font-sans text-[16px] leading-[1.65] text-ink-600 sm:text-[17px]">
++                {hero.descriptor}
++              </p>
+ 
+-            <div className="pt-2 space-y-4 animate-hero-4">
+-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+-                <Button variant="primary" size="lg" href={hero.primaryCta.href}>
++              <div className="mt-8 flex flex-col gap-3 animate-hero-4">
++                <Button
++                  variant="primary"
++                  size="lg"
++                  href={hero.primaryCta.href}
++                  className="w-full justify-between"
++                >
+                   {hero.primaryCta.label}
+                 </Button>
+-                <Button variant="secondary" size="lg" href={hero.secondaryCta.href} icon={false}>
++                <Button
++                  variant="secondary"
++                  size="lg"
++                  href={hero.secondaryCta.href}
++                  icon={false}
++                  className="w-full"
++                >
+                   {hero.secondaryCta.label}
+                 </Button>
+               </div>
+-
+-              {/* High-trust Micro-markers */}
+-              <div className="flex flex-wrap items-center gap-y-2 gap-x-5 pt-2 text-[13px] font-sans text-ink-600">
+-                <div className="flex items-center gap-1.5">
+-                  <ShieldCheck className="w-4 h-4 text-purple flex-shrink-0" />
+-                  <span>Strict Confidentiality</span>
+-                </div>
+-                <div className="flex items-center gap-1.5">
+-                  <Clock className="w-4 h-4 text-purple flex-shrink-0" />
+-                  <span>Prompt Direct Response</span>
+-                </div>
+-              </div>
+             </div>
+           </div>
+         </div>
+diff --git a/src/components/ui/Button.tsx b/src/components/ui/Button.tsx
+index b9bcb32..799a975 100644
+--- a/src/components/ui/Button.tsx
++++ b/src/components/ui/Button.tsx
+@@ -21,14 +21,16 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
+       icon = true,
+       loading = false,
+       disabled,
++      onClick,
+       className,
+       children,
+       ...props
+     },
+     ref
+   ) => {
++    // Two-tone focus ring (offset + brand ring) stays visible on light AND dark bands.
+     const baseStyles =
+-      "group inline-flex items-center justify-center font-sans font-semibold rounded select-none transition-all duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
++      "group inline-flex items-center justify-center font-sans font-semibold rounded select-none transition-[transform,box-shadow,background-color,border-color,color] duration-300 ease-emphasis focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 motion-safe:active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
+ 
+     const sizeStyles = {
+       sm: "h-10 px-4 text-[15px] gap-2.5",
+@@ -38,15 +40,15 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
+ 
+     const variantStyles = {
+       primary:
+-        "bg-orange text-purple-900 shadow-sm hover:bg-orange-600 hover:shadow-md focus-visible:outline-purple active:bg-orange-600",
++        "bg-orange text-purple-900 shadow-cta hover:shadow-cta-hover active:bg-orange-600 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 focus-visible:ring-purple focus-visible:ring-offset-paper",
+       brand:
+-        "bg-purple text-paper shadow-sm hover:bg-purple-700 hover:shadow-md focus-visible:outline-purple active:bg-purple-700",
++        "bg-purple text-paper shadow-brand hover:bg-purple-700 hover:shadow-brand-hover active:bg-purple-700 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 focus-visible:ring-purple focus-visible:ring-offset-paper",
+       secondary:
+-        "bg-transparent border border-purple text-purple-700 hover:bg-mist hover:border-purple-700 hover:shadow-sm focus-visible:outline-purple active:bg-mist",
++        "bg-transparent border border-purple text-purple-700 hover:bg-mist hover:border-purple-700 hover:shadow-lift active:bg-mist motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 focus-visible:ring-purple focus-visible:ring-offset-paper",
+       "secondary-dark":
+-        "bg-transparent border border-paper/40 text-paper hover:border-paper hover:bg-paper/10 focus-visible:outline-orange active:bg-paper/10",
++        "bg-transparent border border-paper/40 text-paper hover:border-paper hover:bg-paper/10 active:bg-paper/10 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 focus-visible:ring-orange focus-visible:ring-offset-purple-900",
+       link:
+-        "bg-transparent p-0 h-auto text-purple hover:text-purple-700 underline underline-offset-4 font-normal hover:no-underline focus-visible:outline-purple active:scale-100",
++        "bg-transparent p-0 h-auto text-purple hover:text-purple-700 underline underline-offset-4 font-normal hover:no-underline focus-visible:ring-purple focus-visible:ring-offset-paper active:scale-100",
+     };
+ 
+     const combinedClassName = cn(
+@@ -59,7 +61,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
+     const iconElement = !loading && icon && (
+       <ArrowRight
+         className={cn(
+-          "stroke-[1.5] transition-transform duration-200 ease-out group-hover:translate-x-1.5",
++          "stroke-[1.5] transition-transform duration-300 ease-emphasis motion-safe:group-hover:translate-x-1.5",
+           size === "sm" ? "w-4 h-4" : size === "lg" ? "w-[18px] h-[18px]" : "w-4 h-4"
+         )}
+         aria-hidden="true"
+@@ -81,6 +83,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
+         <Link
+           href={href}
+           className={combinedClassName}
++          onClick={onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+           ref={ref as React.Ref<HTMLAnchorElement>}
+         >
+           <span>{children}</span>
+@@ -94,6 +97,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
+         ref={ref as React.Ref<HTMLButtonElement>}
+         className={combinedClassName}
+         disabled={disabled || loading}
++        onClick={onClick}
+         aria-busy={loading ? "true" : undefined}
+         {...props}
+       >
+diff --git a/tailwind.config.ts b/tailwind.config.ts
+index 6aa9e15..fa6fbcf 100644
+--- a/tailwind.config.ts
++++ b/tailwind.config.ts
+@@ -12,27 +12,27 @@ const config: Config = {
+       colors: {
+         background:      "var(--background)",
+         foreground:      "var(--foreground)",
+-        paper:           "var(--color-paper)",
+-        mist:            "var(--color-mist)",
++        paper:           "rgb(var(--rgb-paper) / <alpha-value>)",
++        mist:            "rgb(var(--rgb-mist) / <alpha-value>)",
+         ink: {
+-          DEFAULT: "var(--color-ink)",
+-          600:     "var(--color-ink-600)",
+-          400:     "var(--color-ink-400)",
++          DEFAULT: "rgb(var(--rgb-ink) / <alpha-value>)",
++          600:     "rgb(var(--rgb-ink-600) / <alpha-value>)",
++          400:     "rgb(var(--rgb-ink-400) / <alpha-value>)",
+         },
+         purple: {
+-          DEFAULT: "var(--color-purple)",
+-          100:     "var(--color-purple-100)",
+-          700:     "var(--color-purple-700)",
+-          900:     "var(--color-purple-900)",
++          DEFAULT: "rgb(var(--rgb-purple) / <alpha-value>)",
++          100:     "rgb(var(--rgb-purple-100) / <alpha-value>)",
++          700:     "rgb(var(--rgb-purple-700) / <alpha-value>)",
++          900:     "rgb(var(--rgb-purple-900) / <alpha-value>)",
+         },
+         orange: {
+-          DEFAULT: "var(--color-orange)",
+-          600:     "var(--color-orange-600)",
++          DEFAULT: "rgb(var(--rgb-orange) / <alpha-value>)",
++          600:     "rgb(var(--rgb-orange-600) / <alpha-value>)",
+         },
+-        line:           "var(--color-line)",
+-        "on-dark-muted":"var(--color-on-dark-muted)",
+-        success:        "var(--color-success)",
+-        error:          "var(--color-error)",
++        line:            "rgb(var(--rgb-line) / <alpha-value>)",
++        "on-dark-muted": "rgb(var(--rgb-on-dark-muted) / <alpha-value>)",
++        success:         "rgb(var(--rgb-success) / <alpha-value>)",
++        error:           "rgb(var(--rgb-error) / <alpha-value>)",
+       },
+ 
+       /* ── Typography ─────────────────────────────────────── */
+@@ -49,6 +49,22 @@ const config: Config = {
+         narrow:    "760px",
+       },
+ 
++      /* ── Elevation (purple-tinted, never pure black) ───── */
++      boxShadow: {
++        cta:
++          "inset 0 1px 0 rgba(255,255,255,0.38), 0 1px 2px rgba(43,18,54,0.22), 0 10px 22px -8px rgba(249,162,27,0.55)",
++        "cta-hover":
++          "inset 0 1px 0 rgba(255,255,255,0.45), 0 2px 4px rgba(43,18,54,0.22), 0 16px 30px -8px rgba(249,162,27,0.65)",
++        brand:
++          "inset 0 1px 0 rgba(255,255,255,0.14), 0 1px 2px rgba(43,18,54,0.25), 0 10px 22px -10px rgba(127,50,147,0.60)",
++        "brand-hover":
++          "inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 4px rgba(43,18,54,0.25), 0 16px 30px -10px rgba(127,50,147,0.70)",
++        panel:
++          "inset 0 1px 0 rgba(255,255,255,0.90), 0 2px 6px rgba(43,18,54,0.05), 0 28px 56px -28px rgba(43,18,54,0.30)",
++        lift:
++          "inset 0 1px 0 rgba(255,255,255,0.80), 0 14px 34px -18px rgba(43,18,54,0.28)",
++      },
++
+       /* ── Motion ─────────────────────────────────────────── */
+       transitionTimingFunction: {
+         standard: "cubic-bezier(0.2, 0, 0, 1)",

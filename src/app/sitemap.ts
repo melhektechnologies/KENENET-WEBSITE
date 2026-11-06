@@ -1,40 +1,21 @@
 import { MetadataRoute } from "next";
+import { getSiteUrl } from "@/lib/site-url";
+
+const routes: { path: string; priority: number }[] = [
+  { path: "", priority: 1.0 },
+  { path: "/about", priority: 0.8 },
+  { path: "/services", priority: 0.8 },
+  { path: "/approach", priority: 0.8 },
+  { path: "/contact", priority: 0.9 },
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://kenenet.com";
-  const now = new Date();
-
-  return [
-    {
-      url: `${baseUrl}`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/approach`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-  ];
+  const { url } = getSiteUrl();
+  const lastModified = new Date();
+  return routes.map(({ path, priority }) => ({
+    url: `${url}${path}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority,
+  }));
 }
-

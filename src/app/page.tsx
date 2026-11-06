@@ -7,6 +7,7 @@ import { ErpBand } from "@/components/sections/ErpBand";
 import { ClosingBand } from "@/components/sections/ClosingBand";
 import { Heading } from "@/components/ui/Heading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Draft } from "@/components/ui/Draft";
 import { homeData } from "@/data/home";
 
 export default function HomePage() {
@@ -54,7 +55,8 @@ export default function HomePage() {
       {/* H-5 ERP Band */}
       <ErpBand />
 
-      {/* H-6 Approach Preview */}
+      {/* H-6 Approach Preview — hidden in production until the methodology is verified */}
+      <Draft label="Draft — approach preview (pending verified methodology)" className="mx-5 sm:mx-8 lg:mx-12 my-8">
       <section className="w-full bg-paper py-16 md:py-24 border-b border-line">
         <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -81,6 +83,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </Draft>
 
       {/* H-9 Closing Band */}
       <ClosingBand

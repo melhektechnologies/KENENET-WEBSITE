@@ -25,8 +25,14 @@ export const ClosingBand: React.FC<ClosingBandProps> = ({
   secondaryCta,
 }) => {
   return (
-    <section className="w-full bg-purple-900 text-paper py-20 lg:py-28">
-      <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
+    <section className="relative isolate w-full overflow-hidden bg-purple-900 py-20 text-paper lg:py-28">
+      {/* Restrained ambient light — decorative only */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -right-32 -top-40 h-[30rem] w-[30rem] rounded-full bg-purple/45 blur-3xl" />
+        <div className="absolute -bottom-52 -left-24 h-[26rem] w-[26rem] rounded-full bg-orange/10 blur-3xl" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-paper/25 to-transparent" />
+      </div>
+      <div className="reveal max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-7">
             <h2 className="font-serif text-[clamp(2rem,1.67rem+1.5vw,3.25rem)] text-paper leading-tight font-normal">

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle2, AlertCircle, Check, Shield, Info } from "lucide-react";
+import { CheckCircle2, AlertCircle, Check, Info } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { contactData } from "@/data/contact";
 
@@ -28,7 +28,16 @@ export const ConsultationForm: React.FC = () => {
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [submittedRefNumber, setSubmittedRefNumber] = useState("");
+  const mountedAt = useRef<number>(0);
+  const successRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    mountedAt.current = Date.now();
+  }, []);
+
+  useEffect(() => {
+    if (status === "success") successRef.current?.focus();
+  }, [status]);
 
   const handleBlur = (field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
@@ -92,13 +101,45 @@ export const ConsultationForm: React.FC = () => {
     }
 
     setStatus("submitting");
+    setErrorMessage("");
 
-    // Simulate reliable submission
-    setTimeout(() => {
-      const randomRef = `KEN-${Math.floor(100000 + Math.random() * 900000)}`;
-      setSubmittedRefNumber(randomRef);
-      setStatus("success");
-    }, 900);
+    try {
+      const res = await fetch("/api/consultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          organization: formData.organization,
+          role: formData.role,
+          email: formData.email,
+          phone: formData.phone,
+          interest: formData.interest,
+          message: formData.message,
+          consent: formData.consent,
+          website: formData.website,
+          elapsedMs: Date.now() - mountedAt.current,
+        }),
+        signal: AbortSignal.timeout(20_000),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        return;
+      }
+
+      let serverMessage = "";
+      if (res.status === 400) {
+        serverMessage = "Some details need attention. Please review the form and try again.";
+      } else if (res.status === 429) {
+        serverMessage = "Too many attempts. Please wait a few minutes and try again.";
+      }
+      setErrorMessage(serverMessage || form.failure.body);
+    } catch {
+      setErrorMessage(form.failure.body);
+    }
+
+    setStatus("error");
+    setTimeout(() => errorSummaryRef.current?.focus(), 50);
   };
 
   if (status === "success") {
@@ -113,14 +154,13 @@ export const ConsultationForm: React.FC = () => {
             <CheckCircle2 className="w-7 h-7 stroke-[1.75]" />
           </div>
           <div className="space-y-1">
-            <h2 className="font-serif text-2xl sm:text-3xl text-ink font-normal">
+            <h2
+              ref={successRef}
+              tabIndex={-1}
+              className="font-serif text-2xl sm:text-3xl text-ink font-normal focus:outline-none"
+            >
               {form.success.heading}
             </h2>
-            {submittedRefNumber && (
-              <p className="font-mono text-xs text-ink-600 tracking-wider uppercase">
-                Reference ID: <span className="font-semibold text-purple">{submittedRefNumber}</span>
-              </p>
-            )}
           </div>
         </div>
 
@@ -128,9 +168,13 @@ export const ConsultationForm: React.FC = () => {
           {form.success.body}
         </p>
 
-        <div className="p-4 bg-mist border border-line rounded flex items-center gap-3 text-[14px] text-ink-600">
-          <Shield className="w-4 h-4 text-purple flex-shrink-0" />
-          <span>A confirmation will be directed to <strong className="text-ink">{formData.email}</strong>.</span>
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <Button variant="secondary" size="md" href="/services" icon={false}>
+            Explore Our Services
+          </Button>
+          <Button variant="secondary" size="md" href="/approach" icon={false}>
+            See Our Approach
+          </Button>
         </div>
       </div>
     );

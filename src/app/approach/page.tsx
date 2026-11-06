@@ -4,6 +4,8 @@ import { PageOpener } from "@/components/sections/PageOpener";
 import { ClosingBand } from "@/components/sections/ClosingBand";
 import { Heading } from "@/components/ui/Heading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Draft, ContentSlot } from "@/components/ui/Draft";
+import { showDrafts } from "@/lib/content-status";
 import { approachData } from "@/data/approach";
 
 export const metadata: Metadata = {
@@ -12,6 +14,8 @@ export const metadata: Metadata = {
     "How Kenenét Consultancy works with organizations to ensure structural changes take root and last.",
 };
 
+// ⚠ DRAFT — not the client's verified methodology. Hidden in production (see <Draft>).
+// Replace with the real phases once supplied (E-13 / D-8).
 const approachPhases = [
   {
     numeral: "01",
@@ -71,6 +75,18 @@ export default function ApproachPage() {
       {/* P-1 Opener */}
       <PageOpener title={opener.title} intro={opener.intro} />
 
+      {showDrafts() && (
+      <section className="w-full bg-paper py-12 border-b border-line">
+        <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
+          <ContentSlot
+            label="The client's actual methodology: principles, phases, activities, outcomes"
+            gate="E-13 · G1"
+          />
+        </div>
+      </section>
+      )}
+
+      <Draft label="Draft — placeholder methodology, NOT client-verified" className="mx-5 sm:mx-8 lg:mx-12 my-8">
       {/* P-2 Context */}
       <section className="w-full bg-paper py-16 md:py-24 border-b border-line">
         <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
@@ -155,6 +171,8 @@ export default function ApproachPage() {
           </div>
         </div>
       </section>
+
+      </Draft>
 
       {/* Closing Band */}
       <ClosingBand

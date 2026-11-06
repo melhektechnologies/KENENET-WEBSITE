@@ -10,9 +10,10 @@ import { cn } from "@/lib/utils";
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  isScrolled?: boolean;
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, isScrolled = false }) => {
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -74,7 +75,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   return (
     <div
       ref={panelRef}
-      className="fixed inset-0 top-16 z-40 bg-paper px-6 py-8 flex flex-col justify-between overflow-y-auto lg:hidden animate-in fade-in slide-in-from-top-2 duration-200"
+      className={cn(
+        "fixed inset-0 z-40 bg-paper px-6 py-8 flex flex-col justify-between overflow-y-auto lg:hidden animate-in fade-in slide-in-from-top-2 duration-200 transition-[top]",
+        isScrolled ? "top-16" : "top-20"
+      )}
       id="mobile-menu"
       role="dialog"
       aria-modal="true"

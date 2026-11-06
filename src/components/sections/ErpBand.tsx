@@ -17,7 +17,11 @@ export const ErpBand: React.FC = () => {
           </div>
 
           {/* Panel on right (Columns 5-12) */}
-          <div className="lg:col-span-8 bg-mist border border-line rounded p-8 sm:p-12 space-y-6">
+          <div className="reveal relative overflow-hidden rounded border border-line bg-mist p-8 shadow-lift sm:p-12 lg:col-span-8 space-y-6">
+            <span
+              className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple via-purple to-orange"
+              aria-hidden="true"
+            />
             <Heading as="h2" variant="heading-xl">
               {erpBand.heading}
             </Heading>

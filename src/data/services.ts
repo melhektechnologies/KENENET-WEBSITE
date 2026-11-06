@@ -2,15 +2,25 @@ export const servicesData = {
   opener: {
     title: "Our Services",
     intro:
-      "Organizational and management consultancy built around how organizations actually operate.",
+      "What Kenenét Consultancy offers, including ERP solutions delivered through our technology partner.",
   },
   erp: {
     label: "Delivered through our technology partner",
     heading: "ERP Solutions",
     whatErpIs:
-      "An ERP (Enterprise Resource Planning) system brings core business functions—finance, procurement, inventory, and operations—into a single, coordinated system.",
-    implementationSupport:
-      "Technology implementation alone rarely changes how an organization performs. Kenenét provides the change management, workflow alignment, and governance support needed to ensure your team adopts and benefits from the system.",
+      "An ERP (Enterprise Resource Planning) system brings an organization\u2019s core business functions together in a single, coordinated system.",
+    model:
+      "ERP solutions are provided through our technology partner, with Kenenét Consultancy providing implementation support.",
+    partner: {
+      label: "Our technology partner",
+      heading: "The ERP solution",
+      body: "Provides the ERP solution.",
+    },
+    kenenet: {
+      label: "Kenenét Consultancy",
+      heading: "Implementation support",
+      body: "Provides implementation support.",
+    },
     cta: {
       label: "Discuss ERP With Us",
       href: "/contact?interest=erp#consultation-form",
@@ -18,7 +28,7 @@ export const servicesData = {
   },
   notSure: {
     heading: "Not sure where to start?",
-    body: "You do not need a fully scoped project or an RFP to begin. A conversation about where your organization is experiencing friction is often the best first step.",
+    body: "Tell us about your organization and what you are looking to change.",
     cta: {
       label: "Request a Consultation",
       href: "/contact#consultation-form",
@@ -26,11 +36,10 @@ export const servicesData = {
   },
   closing: {
     heading: "Find the right support for your organization.",
-    body: "Tell us about the challenges you are addressing and we will guide you on the best path forward.",
+    body: "Tell us about the challenges you are addressing.",
     primaryCta: {
       label: "Request a Consultation",
       href: "/contact#consultation-form",
     },
   },
 };
-

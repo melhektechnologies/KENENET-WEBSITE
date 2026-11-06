@@ -4,7 +4,7 @@ export const homeData = {
     headlineWord2: "Workplaces",
     supportingLine: "Organizational Excellence for Sustainable Change.",
     descriptor:
-      "Kenenét Consultancy is an Ethiopian organizational and management consultancy. We work with business owners and leadership teams to build the structures, practices and systems that help change take hold and last.",
+      "Kenenét Consultancy is an Ethiopian organizational and management consultancy. ERP solutions are available through our technology partner, with implementation support from Kenenét.",
     primaryCta: {
       label: "Request a Consultation",
       href: "/contact#consultation-form",
@@ -23,7 +23,7 @@ export const homeData = {
     statementLead: "Most organizations know when something needs to change.",
     statementRest:
       "Fewer know how to change it without disturbing the work that keeps the business running.",
-    body: "Kenenét Consultancy supports Ethiopian organizations on the management and organizational side of that challenge, with a focus on change that is built to last.",
+    body: "Kenenét Consultancy is an Ethiopian organizational and management consultancy, focused on change that is built to last.",
     link: {
       label: "Learn About Kenenét",
       href: "/about",
@@ -32,7 +32,7 @@ export const homeData = {
   servicesIntro: {
     heading: "Our Services",
     intro:
-      "Our services are grouped so you can find what applies to your organization quickly. If you are not sure where your challenge sits, a conversation is a good place to start.",
+      "Explore what Kenenét Consultancy offers, including ERP solutions through our technology partner.",
     link: {
       label: "View all services",
       href: "/services",
