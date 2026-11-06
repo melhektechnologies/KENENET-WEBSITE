@@ -27,6 +27,7 @@ export const ConsultationForm: React.FC = () => {
 
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorKind, setErrorKind] = useState<"validation" | "delivery">("delivery");
   const [errorMessage, setErrorMessage] = useState("");
   const mountedAt = useRef<number>(0);
   const successRef = useRef<HTMLHeadingElement>(null);
@@ -93,6 +94,7 @@ export const ConsultationForm: React.FC = () => {
 
     if (hasErrors) {
       setStatus("error");
+      setErrorKind("validation");
       setErrorMessage("Please complete all required fields and accept the consent notice.");
       setTimeout(() => {
         errorSummaryRef.current?.focus();
@@ -138,6 +140,7 @@ export const ConsultationForm: React.FC = () => {
       setErrorMessage(form.failure.body);
     }
 
+    setErrorKind("delivery");
     setStatus("error");
     setTimeout(() => errorSummaryRef.current?.focus(), 50);
   };
@@ -145,13 +148,13 @@ export const ConsultationForm: React.FC = () => {
   if (status === "success") {
     return (
       <div
-        className="bg-paper border border-purple/30 rounded p-8 sm:p-12 space-y-6 animate-in fade-in duration-300 shadow-sm"
+        className="bg-paper border border-purple/30 rounded-2xl p-8 sm:p-12 space-y-6 animate-hero-1 shadow-lift"
         role="status"
         aria-live="polite"
       >
         <div className="flex items-start gap-4 text-success">
           <div className="w-12 h-12 rounded bg-purple-100 flex items-center justify-center text-purple flex-shrink-0">
-            <CheckCircle2 className="w-7 h-7 stroke-[1.75]" />
+            <CheckCircle2 className="w-7 h-7 stroke-[1.75]" aria-hidden="true" />
           </div>
           <div className="space-y-1">
             <h2
@@ -206,14 +209,14 @@ export const ConsultationForm: React.FC = () => {
         <div
           ref={errorSummaryRef}
           tabIndex={-1}
-          className="p-4 bg-mist border border-error rounded flex items-start gap-3 text-error focus:outline-none focus:ring-2 focus:ring-error"
+          className="p-4 bg-mist border border-error rounded-lg flex items-start gap-3 text-error focus:outline-none focus:ring-2 focus:ring-error"
           role="alert"
           aria-labelledby="error-summary-title"
         >
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" aria-hidden="true" />
           <div>
             <p id="error-summary-title" className="font-sans font-semibold text-[15px]">
-              {form.failure.heading}
+              {errorKind === "validation" ? "Some details need attention." : form.failure.heading}
             </p>
             <p className="font-sans text-[14px]">{errorMessage || form.failure.body}</p>
           </div>
@@ -238,7 +241,7 @@ export const ConsultationForm: React.FC = () => {
               onChange={handleChange}
               aria-invalid={touched.fullName && Boolean(errors.fullName)}
               aria-describedby={touched.fullName && errors.fullName ? "fullName-error" : undefined}
-              className={`w-full h-12 px-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
+              className={`w-full h-12 px-3.5 bg-white border rounded-lg text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
                 touched.fullName && errors.fullName
                   ? "border-error focus:border-error focus:ring-error"
                   : touched.fullName && formData.fullName
@@ -275,7 +278,7 @@ export const ConsultationForm: React.FC = () => {
               onChange={handleChange}
               aria-invalid={touched.organization && Boolean(errors.organization)}
               aria-describedby={touched.organization && errors.organization ? "organization-error" : undefined}
-              className={`w-full h-12 px-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
+              className={`w-full h-12 px-3.5 bg-white border rounded-lg text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
                 touched.organization && errors.organization
                   ? "border-error focus:border-error focus:ring-error"
                   : touched.organization && formData.organization
@@ -315,7 +318,7 @@ export const ConsultationForm: React.FC = () => {
               onChange={handleChange}
               aria-invalid={touched.email && Boolean(errors.email)}
               aria-describedby={touched.email && errors.email ? "email-error" : undefined}
-              className={`w-full h-12 px-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
+              className={`w-full h-12 px-3.5 bg-white border rounded-lg text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple ${
                 touched.email && errors.email
                   ? "border-error focus:border-error focus:ring-error"
                   : touched.email && isEmailValid(formData.email)
@@ -347,7 +350,7 @@ export const ConsultationForm: React.FC = () => {
             disabled={status === "submitting"}
             value={formData.phone}
             onChange={handleChange}
-            className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+            className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded-lg text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
           />
         </div>
       </div>
@@ -363,7 +366,7 @@ export const ConsultationForm: React.FC = () => {
           disabled={status === "submitting"}
           value={formData.interest}
           onChange={handleChange}
-          className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple cursor-pointer"
+          className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded-lg text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple cursor-pointer"
         >
           {form.interestOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -394,7 +397,7 @@ export const ConsultationForm: React.FC = () => {
           onChange={handleChange}
           aria-invalid={touched.message && Boolean(errors.message)}
           aria-describedby={touched.message && errors.message ? "message-error" : undefined}
-          className={`w-full p-3.5 bg-white border rounded text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple resize-y min-h-[140px] ${
+          className={`w-full p-3.5 bg-white border rounded-lg text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple resize-y min-h-[140px] ${
             touched.message && errors.message
               ? "border-error focus:border-error focus:ring-error"
               : "border-ink-400 focus:border-purple"

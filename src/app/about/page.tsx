@@ -27,7 +27,7 @@ export default function AboutPage() {
         <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             <div className="lg:col-span-4">
-              <SectionLabel as="h2">{whoWeAre.heading}</SectionLabel>
+              <SectionLabel index="01">About Kenenét</SectionLabel>
             </div>
             <div className="lg:col-span-8 space-y-6">
               <Heading as="h2" variant="heading-xl">
@@ -70,7 +70,7 @@ export default function AboutPage() {
         <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             <div className="lg:col-span-4">
-              <SectionLabel as="h2">Technology</SectionLabel>
+              <SectionLabel index="02">Technology</SectionLabel>
             </div>
             <div className="lg:col-span-8 space-y-6">
               <Heading as="h2" variant="heading-xl">

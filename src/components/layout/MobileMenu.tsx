@@ -10,127 +10,98 @@ import { cn } from "@/lib/utils";
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  isScrolled?: boolean;
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, isScrolled = false }) => {
+export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Lock body scroll
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previous;
     };
   }, [isOpen]);
 
-  // Trap focus and handle Escape
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
+    if (!isOpen) return;
 
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
         return;
       }
+      if (e.key !== "Tab" || !panelRef.current) return;
 
-      if (e.key === "Tab" && panelRef.current) {
-        const focusableElements = panelRef.current.querySelectorAll<HTMLElement>(
-          'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusableElements.length === 0) return;
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
 
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey && document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        } else if (!e.shiftKey && document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
-        }
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
+    panelRef.current?.querySelector<HTMLElement>("a")?.focus();
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Focus first link on open
-  useEffect(() => {
-    if (isOpen && panelRef.current) {
-      const firstLink = panelRef.current.querySelector<HTMLElement>("a");
-      firstLink?.focus();
-    }
-  }, [isOpen]);
-
   if (!isOpen) return null;
+
+  const links = [{ label: "Home", href: "/" }, ...siteConfig.nav, { label: "Contact Us", href: "/contact" }];
 
   return (
     <div
       ref={panelRef}
-      className={cn(
-        "fixed inset-0 z-40 bg-paper px-6 py-8 flex flex-col justify-between overflow-y-auto lg:hidden animate-in fade-in slide-in-from-top-2 duration-200 transition-[top]",
-        isScrolled ? "top-16" : "top-20"
-      )}
       id="mobile-menu"
       role="dialog"
       aria-modal="true"
       aria-label="Navigation menu"
+      className="animate-menu-in fixed inset-x-0 bottom-0 top-[72px] z-30 flex flex-col justify-between overflow-y-auto bg-paper/95 px-5 pb-8 pt-4 backdrop-blur-2xl sm:px-8 lg:hidden"
     >
-      <div className="flex flex-col divide-y divide-line">
-        <Link
-          href="/"
-          onClick={onClose}
-          className={cn(
-            "font-serif text-2xl py-4 transition-colors flex items-center",
-            pathname === "/"
-              ? "text-purple font-semibold border-l-2 border-purple pl-3 -ml-3"
-              : "text-ink hover:text-purple-700"
-          )}
-          aria-current={pathname === "/" ? "page" : undefined}
-        >
-          Home
-        </Link>
-        {siteConfig.nav.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              className={cn(
-                "font-serif text-2xl py-4 transition-colors flex items-center",
-                isActive
-                  ? "text-purple font-semibold border-l-2 border-purple pl-3 -ml-3"
-                  : "text-ink hover:text-purple-700"
-              )}
-              aria-current={isActive ? "page" : undefined}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
-        <Link
-          href="/contact"
-          onClick={onClose}
-          className={cn(
-            "font-serif text-2xl py-4 transition-colors flex items-center",
-            pathname === "/contact"
-              ? "text-purple font-semibold border-l-2 border-purple pl-3 -ml-3"
-              : "text-ink hover:text-purple-700"
-          )}
-          aria-current={pathname === "/contact" ? "page" : undefined}
-        >
-          Contact Us
-        </Link>
-      </div>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-hero-field" />
+
+      <nav aria-label="Mobile">
+        <ul className="flex flex-col divide-y divide-line">
+          {links.map((item, index) => {
+            const isActive = pathname === item.href;
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={onClose}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "group flex items-baseline gap-4 py-5 font-serif text-[1.75rem] leading-none transition-colors",
+                    isActive ? "text-purple" : "text-ink hover:text-purple-700"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "tabular w-6 font-sans text-[12px] font-semibold tracking-[0.12em]",
+                      isActive ? "text-purple" : "text-ink-600"
+                    )}
+                    aria-hidden="true"
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className={cn(isActive && "italic")}>{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
 
       <div className="pt-8">
         <Button
@@ -142,6 +113,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, isScrol
         >
           {siteConfig.headerCta.label}
         </Button>
+        <p className="mt-5 text-center font-sans text-[13px] text-ink-600">{siteConfig.tagline}</p>
       </div>
     </div>
   );

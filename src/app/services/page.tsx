@@ -75,7 +75,7 @@ export default function ServicesPage() {
             <div className="lg:col-span-4">
               <SectionLabel as="h2">{erp.label}</SectionLabel>
             </div>
-            <div className="reveal relative space-y-6 overflow-hidden rounded border border-line bg-mist p-8 shadow-lift sm:p-12 lg:col-span-8">
+            <div className="reveal relative space-y-6 overflow-hidden rounded-2xl border border-line bg-mist p-8 shadow-lift sm:p-12 lg:col-span-8">
               <span
                 className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple via-purple to-orange"
                 aria-hidden="true"
@@ -130,7 +130,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-4">
-              <SectionLabel as="h2">Getting Started</SectionLabel>
+              <SectionLabel>Getting Started</SectionLabel>
             </div>
             <div className="space-y-6 lg:col-span-8">
               <Heading as="h2" variant="heading-xl">

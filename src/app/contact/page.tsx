@@ -37,7 +37,7 @@ export default function ContactPage() {
             <div className="lg:col-span-4 space-y-6 pt-2">
               <SectionLabel as="h2">{contactData.form.guidance.heading}</SectionLabel>
 
-              <div className="bg-mist border border-line rounded p-6 sm:p-8 space-y-5">
+              <div className="bg-mist border border-line rounded-2xl p-6 sm:p-8 space-y-5">
                 <ul className="space-y-3">
                   {contactData.form.guidance.items.map((item) => (
                     <li key={item} className="flex items-start gap-3 font-sans text-[15px] text-ink-600 leading-relaxed">

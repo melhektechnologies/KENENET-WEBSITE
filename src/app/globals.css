@@ -181,6 +181,118 @@ body {
   }
 }
 
+/* ─── Dark glass (on purple-900 bands) ──────────────────────────────────── */
+.glass-dark {
+  background-color: rgba(43, 18, 54, 0.92);
+  border: 1px solid rgba(252, 251, 249, 0.12);
+}
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass-dark {
+    background-image: linear-gradient(160deg, rgba(252, 251, 249, 0.09) 0%, rgba(252, 251, 249, 0.02) 55%);
+    background-color: rgba(43, 18, 54, 0.42);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass-dark {
+    background-image: none;
+    background-color: #2b1236;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* ─── Architectural grid texture, faded at the edges ────────────────────── */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(127, 50, 147, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(127, 50, 147, 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 70% 30%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(ellipse 75% 65% at 70% 30%, #000 0%, transparent 75%);
+}
+.bg-grid-dark {
+  background-image:
+    linear-gradient(to right, rgba(252, 251, 249, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(252, 251, 249, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 80% 20%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse 70% 70% at 80% 20%, #000 0%, transparent 70%);
+}
+
+/* ─── Gradient hairline border (1px, purple → orange) ───────────────────── */
+.border-gradient {
+  position: relative;
+}
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(127, 50, 147, 0.55), rgba(127, 50, 147, 0.08) 45%, rgba(249, 162, 27, 0.55));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Brand gradient text (decorative words only; solid fallback) ───────── */
+.text-gradient-brand {
+  color: var(--color-purple);
+}
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .text-gradient-brand {
+    background-image: linear-gradient(100deg, #7f3293 0%, #9a3f9e 45%, #e08a00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ─── Interactive surface: lift + brand glow on hover ───────────────────── */
+.surface-interactive {
+  transition:
+    transform 500ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 300ms ease;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .surface-interactive:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.85),
+      0 2px 6px rgba(43, 18, 54, 0.06),
+      0 30px 60px -30px rgba(127, 50, 147, 0.45);
+  }
+}
+
+/* ─── Slow ambient drift for decorative orbs ────────────────────────────── */
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-3%, 4%, 0) scale(1.06); }
+}
+.animate-drift      { animation: drift 18s ease-in-out infinite; }
+.animate-drift-slow { animation: drift 26s ease-in-out infinite reverse; }
+
+/* ─── Mobile menu entrance ──────────────────────────────────────────────── */
+@keyframes menuIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-menu-in { animation: menuIn 280ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-menu-in > * > * {
+  animation: heroFadeUp 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-menu-in > * > *:nth-child(2) { animation-delay: 40ms; }
+.animate-menu-in > * > *:nth-child(3) { animation-delay: 80ms; }
+.animate-menu-in > * > *:nth-child(4) { animation-delay: 120ms; }
+.animate-menu-in > * > *:nth-child(5) { animation-delay: 160ms; }
+
+/* ─── Section index numeral (eyebrow) ───────────────────────────────────── */
+.tabular { font-variant-numeric: tabular-nums; }
+
 /* ─── Design-system colour utilities (used by layout & Tailwind classes) ── */
 .bg-paper  { background-color: var(--color-paper); }
 .text-ink  { color: var(--color-ink); }

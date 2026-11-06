@@ -92,7 +92,7 @@ export default function ApproachPage() {
         <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             <div className="lg:col-span-4">
-              <SectionLabel as="h2">Methodology</SectionLabel>
+              <SectionLabel>Methodology</SectionLabel>
             </div>
             <div className="lg:col-span-8 space-y-6">
               <Heading as="h2" variant="heading-xl">
