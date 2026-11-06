@@ -4,182 +4,81 @@ import { PageOpener } from "@/components/sections/PageOpener";
 import { ClosingBand } from "@/components/sections/ClosingBand";
 import { Heading } from "@/components/ui/Heading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { Draft, ContentSlot } from "@/components/ui/Draft";
-import { showDrafts } from "@/lib/content-status";
-import { approachData } from "@/data/approach";
+import { approachData, stages } from "@/data/approach";
 
 export const metadata: Metadata = {
   title: "Our Approach",
   description:
-    "How Kenenét Consultancy works with organizations to ensure structural changes take root and last.",
+    "Kenenét Consultancy's five-stage approach to workplace transformation: problem identification, workflow assessment, policy alignment, system implementation and follow-up review.",
 };
 
-// ⚠ DRAFT — not the client's verified methodology. Hidden in production (see <Draft>).
-// Replace with the real phases once supplied (E-13 / D-8).
-const approachPhases = [
-  {
-    numeral: "01",
-    name: "Discovery & Operational Diagnosis",
-    purpose:
-      "Understanding the exact friction points and workflow dependencies across departments.",
-    activities: [
-      "Interviews with departmental heads, frontline managers, and operational staff",
-      "Analysis of information handoffs, bottlenecks, and documentation practices",
-      "Identification of structural misalignments between leadership objectives and day-to-day work",
-    ],
-    deliverable: "Diagnostic Baseline & Practical Alignment Roadmap",
-  },
-  {
-    numeral: "02",
-    name: "Structure & Workflow Design",
-    purpose:
-      "Designing lean management frameworks and standard procedures that teams can realistically operate.",
-    activities: [
-      "Standard Operating Procedure (SOP) drafting and operational boundary definition",
-      "Governance structure design and accountability matrix development",
-      "Technology adoption workflow integration and stakeholder role assignment",
-    ],
-    deliverable: "Operational Blueprint & Implementation Framework",
-  },
-  {
-    numeral: "03",
-    name: "Implementation & Change Adoption",
-    purpose:
-      "Bridging the critical gap between executive decisions and daily departmental execution.",
-    activities: [
-      "Guided workflow transition workshops and pilot testing within selected departments",
-      "Management coaching on accountability reinforcement and change resistance handling",
-      "Continuous feedback capture and process calibration during live cycles",
-    ],
-    deliverable: "Adoption Milestones & Active Governance Support",
-  },
-  {
-    numeral: "04",
-    name: "Governance & Sustainable Handover",
-    purpose:
-      "Ensuring management teams independently maintain and evolve the new structures over the long term.",
-    activities: [
-      "Leadership performance metric review and recurring governance cadence setup",
-      "Post-implementation adoption audit and team competency confirmation",
-      "Final handover of operational documentation and management tools",
-    ],
-    deliverable: "Sustainable Operations Review & Closure Assessment",
-  },
-];
-
 export default function ApproachPage() {
-  const { opener, context, closing } = approachData;
+  const { opener, reach, role, aim, closing } = approachData;
 
   return (
     <div className="flex flex-col">
-      {/* P-1 Opener */}
-      <PageOpener title={opener.title} intro={opener.intro} />
+      <PageOpener title={opener.title} intro={opener.intro}>
+        <p className="max-w-2xl font-sans text-[16px] leading-relaxed text-ink">{reach}</p>
+      </PageOpener>
 
-      {showDrafts() && (
-      <section className="w-full bg-paper py-12 border-b border-line">
-        <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
-          <ContentSlot
-            label="The client's actual methodology: principles, phases, activities, outcomes"
-            gate="E-13 · G1"
-          />
-        </div>
-      </section>
-      )}
-
-      <Draft label="Draft — placeholder methodology, NOT client-verified" className="mx-5 sm:mx-8 lg:mx-12 my-8">
-      {/* P-2 Context */}
-      <section className="w-full bg-paper py-16 md:py-24 border-b border-line">
-        <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      <section aria-labelledby="stages-heading" className="w-full bg-paper py-20 md:py-28">
+        <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-4">
-              <SectionLabel>Methodology</SectionLabel>
-            </div>
-            <div className="lg:col-span-8 space-y-6">
-              <Heading as="h2" variant="heading-xl">
-                {context.heading}
-              </Heading>
-              <p className="font-sans text-[17px] sm:text-[18px] text-ink-600 leading-relaxed max-w-2xl">
-                {context.body}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* P-3 Process Timeline */}
-      <section className="w-full bg-mist py-16 md:py-24 border-b border-line">
-        <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            <div className="lg:col-span-4">
-              <SectionLabel as="h2">Engagement Lifecycle</SectionLabel>
-              <div className="mt-4 hidden lg:block sticky top-28">
-                <p className="font-sans text-[15px] text-ink-600 leading-relaxed max-w-xs">
-                  Each phase is grounded in practical operational handovers, ensuring your internal management retains ownership from day one.
-                </p>
+              <div className="space-y-5 lg:sticky lg:top-28">
+                <SectionLabel index="01">Method</SectionLabel>
+                <Heading as="h2" id="stages-heading" variant="heading-xl">
+                  Five stages of workplace transformation
+                </Heading>
               </div>
             </div>
 
-            <div className="lg:col-span-8 space-y-12">
-              <ol className="relative border-l border-line space-y-12 ml-4 sm:ml-6">
-                {approachPhases.map((phase, idx) => (
-                  <li key={idx} className="relative pl-8 sm:pl-10">
-                    {/* Timeline Node */}
-                    <span className="absolute -left-[17px] top-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-paper border border-purple text-purple font-serif text-[15px] font-medium shadow-sm">
-                      {phase.numeral}
+            <ol className="relative lg:col-span-8">
+              <span aria-hidden="true" className="absolute bottom-6 left-[1.6rem] top-6 w-px bg-purple/20 sm:left-[2.1rem]" />
+              {stages.map((stage, i) => (
+                <li key={stage.number} id={`stage-${i + 1}`} className="reveal relative scroll-mt-28 pb-12 last:pb-0">
+                  <div className="flex gap-6 sm:gap-8">
+                    <span
+                      aria-hidden="true"
+                      className="tabular relative z-10 flex h-[3.25rem] w-[3.25rem] flex-none items-center justify-center rounded-full border border-purple/30 bg-paper font-serif text-[1.35rem] text-purple sm:h-[4.25rem] sm:w-[4.25rem] sm:text-[1.75rem]"
+                    >
+                      {stage.number}
                     </span>
-
-                    <div className="bg-paper border border-line rounded p-6 sm:p-8 space-y-4 hover:border-purple/40 transition-colors">
-                      <Heading as="h3" variant="heading-md">
-                        {phase.name}
-                      </Heading>
-
-                      <p className="font-sans text-[16px] text-ink leading-relaxed">
-                        {phase.purpose}
-                      </p>
-
-                      <div className="pt-2">
-                        <span className="font-sans text-[13px] font-semibold tracking-wider uppercase text-ink-600 block mb-2">
-                          Core Activities
-                        </span>
-                        <ul className="space-y-2">
-                          {phase.activities.map((act, actIdx) => (
-                            <li
-                              key={actIdx}
-                              className="flex items-start gap-3 font-sans text-[15px] text-ink-600"
-                            >
-                              <span
-                                className="w-1.5 h-1.5 bg-purple flex-shrink-0 mt-2"
-                                aria-hidden="true"
-                              />
-                              <span>{act}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="pt-4 border-t border-line/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[14px]">
-                        <span className="font-sans text-ink-600">Phase Outcome:</span>
-                        <span className="font-sans font-semibold text-purple">
-                          {phase.deliverable}
-                        </span>
-                      </div>
+                    <div className="space-y-3 pt-2 sm:pt-4">
+                      <h3 className="font-serif text-[clamp(1.4rem,1.3rem+0.5vw,1.85rem)] leading-snug text-ink">
+                        <span className="sr-only">Stage {i + 1}: </span>
+                        {stage.name}
+                      </h3>
+                      <p className="max-w-[58ch] font-sans text-[17px] leading-relaxed text-ink-600">{stage.description}</p>
                     </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
-      </Draft>
+      <section aria-label="Our role and aim" className="w-full border-t border-line bg-mist py-20 md:py-28">
+        <div className="mx-auto grid max-w-[1336px] grid-cols-1 gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16 lg:px-12">
+          <div className="reveal space-y-5">
+            <SectionLabel index="02">Role</SectionLabel>
+            <Heading as="h2" variant="heading-md">
+              {role.heading}
+            </Heading>
+            <p className="max-w-[58ch] font-sans text-[17px] leading-relaxed text-ink-600">{role.body}</p>
+          </div>
+          <div className="reveal space-y-5">
+            <SectionLabel index="03">Outcome</SectionLabel>
+            <Heading as="h2" variant="heading-md">
+              {aim.heading}
+            </Heading>
+            <p className="max-w-[58ch] font-sans text-[17px] leading-relaxed text-ink-600">{aim.body}</p>
+          </div>
+        </div>
+      </section>
 
-      {/* Closing Band */}
-      <ClosingBand
-        heading={closing.heading}
-        body={closing.body}
-        primaryCta={closing.primaryCta}
-      />
+      <ClosingBand heading={closing.heading} body={closing.body} />
     </div>
   );
 }

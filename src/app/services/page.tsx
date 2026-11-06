@@ -3,153 +3,133 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageOpener } from "@/components/sections/PageOpener";
 import { ClosingBand } from "@/components/sections/ClosingBand";
-import { Button } from "@/components/ui/Button";
 import { Heading } from "@/components/ui/Heading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { ContentSlot } from "@/components/ui/Draft";
-import { showDrafts } from "@/lib/content-status";
-import { servicesData } from "@/data/services";
+import { ArrowLink } from "@/components/ui/ArrowLink";
+import { Button } from "@/components/ui/Button";
+import { serviceGroups, servicesData } from "@/data/services";
 
 export const metadata: Metadata = {
   title: "Our Services",
   description:
-    "What Kenenét Consultancy offers, including ERP solutions delivered through a technology partner with implementation support.",
+    "Management consulting, organizational design, corporate systems, workforce management, HR solutions, company formation and business planning from Kenenét Consultancy in Addis Ababa.",
 };
 
 export default function ServicesPage() {
-  const { opener, erp, notSure, closing } = servicesData;
-
-  // The jump bar only earns its place once the catalogue exists (3+ targets).
-  const jumpItems = [
-    ...(showDrafts() ? [{ href: "#catalogue", label: "Services" }] : []),
-    { href: "#erp", label: "ERP Solutions" },
-    { href: "#getting-started", label: "Getting Started" },
-  ];
+  const { opener, umbrella, engagementTypes, erp, closing } = servicesData;
 
   return (
     <div className="flex flex-col">
-      <PageOpener title={opener.title} intro={opener.intro} />
+      <PageOpener title={opener.title} intro={opener.intro}>
+        <p className="flex flex-wrap items-center gap-x-4 gap-y-2 font-sans text-[16px] text-ink">
+          {umbrella.text}
+          <ArrowLink href={umbrella.link.href}>{umbrella.link.label}</ArrowLink>
+        </p>
+      </PageOpener>
 
-      {jumpItems.length >= 3 && (
-        <nav
-          aria-label="Jump to a section"
-          className="sticky top-16 z-20 w-full border-b border-line bg-paper/95 supports-[backdrop-filter]:bg-paper/75 backdrop-blur-xl md:top-20"
-        >
-          <div className="mx-auto flex h-14 max-w-[1336px] items-center gap-8 overflow-x-auto px-5 font-sans text-[15px] font-medium sm:px-8 lg:px-12">
-            {jumpItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="whitespace-nowrap py-1 text-ink transition-colors hover:text-purple"
+      <nav aria-label="Service groups" className="sticky top-[72px] z-20 w-full border-b border-line bg-paper/90 backdrop-blur-xl">
+        <ul className="mx-auto flex max-w-[1336px] gap-1 overflow-x-auto px-5 py-2 sm:px-8 lg:px-12">
+          {serviceGroups.map((g) => (
+            <li key={g.slug} className="flex-none">
+              <a
+                href={`#${g.slug}`}
+                className="inline-flex h-10 items-center rounded-full px-4 font-sans text-[14px] font-medium text-ink-600 transition-colors hover:bg-mist hover:text-purple-700"
               >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </nav>
-      )}
+                {g.name}
+              </a>
+            </li>
+          ))}
+          <li className="flex-none">
+            <a
+              href="#erp"
+              className="inline-flex h-10 items-center rounded-full px-4 font-sans text-[14px] font-medium text-ink-600 transition-colors hover:bg-mist hover:text-purple-700"
+            >
+              ERP
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-      {/* Service catalogue — populated from the approved brochure (G1) */}
-      {showDrafts() && (
-        <section id="catalogue" className="scroll-mt-36 w-full border-b border-line bg-paper py-16 md:py-24">
+      {serviceGroups.map((group, gi) => (
+        <section
+          key={group.slug}
+          id={group.slug}
+          aria-labelledby={`${group.slug}-heading`}
+          className="w-full scroll-mt-32 border-b border-line bg-paper py-16 md:py-24"
+        >
           <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
               <div className="lg:col-span-4">
-                <SectionLabel as="h2">Services</SectionLabel>
+                <div className="space-y-4 lg:sticky lg:top-40">
+                  <SectionLabel index={String(gi + 1).padStart(2, "0")}>Service group</SectionLabel>
+                  <Heading as="h2" id={`${group.slug}-heading`} variant="heading-xl">
+                    {group.name}
+                  </Heading>
+                </div>
               </div>
-              <div className="lg:col-span-8">
-                <ContentSlot
-                  label="Complete service catalogue, grouped by category, verbatim from the brochure"
-                  gate="E-01 · E-06 · G1"
-                />
-              </div>
+              <ul className="divide-y divide-line border-y border-line lg:col-span-8">
+                {group.services.map((service) => (
+                  <li key={service.slug} id={service.slug} className="reveal scroll-mt-36 py-8">
+                    <article className="grid grid-cols-1 gap-3 md:grid-cols-12 md:gap-8">
+                      <div className="space-y-1 md:col-span-5">
+                        <h3 className="font-serif text-[1.5rem] leading-snug text-ink">{service.name}</h3>
+                        {service.definingLine && (
+                          <p className="font-sans text-[15px] font-semibold text-purple-700">{service.definingLine}</p>
+                        )}
+                      </div>
+                      <div className="space-y-4 md:col-span-7">
+                        {service.description && (
+                          <p className="font-sans text-[16px] leading-relaxed text-ink-600 sm:text-[17px]">{service.description}</p>
+                        )}
+                        <Link
+                          href={`/contact?interest=${service.slug}#consultation-form`}
+                          className="inline-flex min-h-11 items-center font-sans text-[15px] font-semibold text-purple-700 underline underline-offset-4 hover:text-purple"
+                        >
+                          Ask about {service.name}
+                        </Link>
+                      </div>
+                    </article>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
-      )}
+      ))}
 
-      {/* ERP — confirmed facts only */}
-      <section id="erp" className="scroll-mt-36 w-full border-b border-line bg-paper py-16 md:py-24">
+      <section aria-labelledby="engagements-heading" className="w-full bg-mist py-16 md:py-24">
         <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+          <div className="reveal grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-4">
-              <SectionLabel as="h2">{erp.label}</SectionLabel>
+              <Heading as="h2" id="engagements-heading" variant="heading-md">
+                {engagementTypes.heading}
+              </Heading>
             </div>
-            <div className="reveal relative space-y-6 overflow-hidden rounded-2xl border border-line bg-mist p-8 shadow-lift sm:p-12 lg:col-span-8">
-              <span
-                className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple via-purple to-orange"
-                aria-hidden="true"
-              />
-              <Heading as="h2" variant="heading-xl">
+            <p className="max-w-[62ch] font-sans text-[17px] leading-relaxed text-ink-600 lg:col-span-8">{engagementTypes.body}</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="erp" aria-labelledby="erp-heading" className="w-full scroll-mt-32 border-t border-line bg-paper py-16 md:py-24">
+        <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
+          <div className="reveal grid grid-cols-1 items-center gap-8 rounded-2xl border border-line p-8 sm:p-12 lg:grid-cols-12">
+            <div className="space-y-4 lg:col-span-8">
+              <SectionLabel>Technology partner</SectionLabel>
+              <Heading as="h2" id="erp-heading" variant="heading-xl">
                 {erp.heading}
               </Heading>
-              <p className="max-w-2xl font-sans text-[17px] leading-relaxed text-ink-600 sm:text-[18px]">
-                {erp.whatErpIs}
-              </p>
-              <p className="max-w-2xl font-sans text-[17px] leading-relaxed text-ink sm:text-[18px]">
-                {erp.model}
-              </p>
-
-              <div className="grid grid-cols-1 gap-8 border-t border-line pt-8 md:grid-cols-2 md:gap-0 md:divide-x md:divide-line">
-                <div className="space-y-3 md:pr-8">
-                  <span className="block font-sans text-[13px] font-semibold uppercase tracking-wider text-purple">
-                    {erp.partner.label}
-                  </span>
-                  <Heading as="h3" variant="heading-md">
-                    {erp.partner.heading}
-                  </Heading>
-                  <p className="font-sans text-[16px] leading-relaxed text-ink-600">{erp.partner.body}</p>
-                </div>
-                <div className="space-y-3 md:pl-8">
-                  <span className="block font-sans text-[13px] font-semibold uppercase tracking-wider text-purple">
-                    {erp.kenenet.label}
-                  </span>
-                  <Heading as="h3" variant="heading-md">
-                    {erp.kenenet.heading}
-                  </Heading>
-                  <p className="font-sans text-[16px] leading-relaxed text-ink-600">{erp.kenenet.body}</p>
-                </div>
-              </div>
-
-              <ContentSlot
-                label="Partner name, ERP product, exact scope of implementation support, naming permission"
-                gate="E-05 · G3"
-              />
-
-              <div className="pt-2">
-                <Button variant="primary" size="md" href={erp.cta.href}>
-                  {erp.cta.label}
-                </Button>
-              </div>
+              <p className="max-w-[58ch] font-sans text-[17px] leading-relaxed text-ink-600">{erp.body}</p>
+            </div>
+            <div className="lg:col-span-4 lg:justify-self-end">
+              <Button variant="secondary" size="lg" href={erp.link.href}>
+                {erp.link.label}
+              </Button>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="getting-started" className="scroll-mt-36 w-full border-b border-line bg-paper py-16 md:py-24">
-        <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
-            <div className="lg:col-span-4">
-              <SectionLabel>Getting Started</SectionLabel>
-            </div>
-            <div className="space-y-6 lg:col-span-8">
-              <Heading as="h2" variant="heading-xl">
-                {notSure.heading}
-              </Heading>
-              <p className="max-w-2xl font-sans text-[17px] leading-relaxed text-ink-600 sm:text-[18px]">
-                {notSure.body}
-              </p>
-              <div className="pt-2">
-                <Button variant="secondary" size="md" href={notSure.cta.href}>
-                  {notSure.cta.label}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <ClosingBand heading={closing.heading} body={closing.body} primaryCta={closing.primaryCta} />
+      <ClosingBand heading={closing.heading} body={closing.body} />
     </div>
   );
 }

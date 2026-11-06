@@ -3,8 +3,9 @@
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { siteConfig } from "@/data/site";
+import { contactDetails, siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 interface MobileMenuProps {
@@ -65,8 +66,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, trigger
 
   if (!isOpen) return null;
 
-  const links = [{ label: "Home", href: "/" }, ...siteConfig.nav, { label: "Contact Us", href: "/contact" }];
-
   return (
     <div
       ref={panelRef}
@@ -74,13 +73,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, trigger
       role="dialog"
       aria-modal="true"
       aria-label="Navigation menu"
-      className="animate-menu-in fixed inset-x-0 bottom-0 top-[72px] z-30 flex flex-col justify-between overflow-y-auto bg-paper/95 px-5 pb-8 pt-4 backdrop-blur-2xl sm:px-8 lg:hidden"
+      className="animate-menu-in fixed inset-x-0 bottom-0 top-[72px] z-30 flex flex-col justify-between overflow-y-auto bg-paper px-5 pb-8 pt-4 sm:px-8 xl:hidden"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-hero-field" />
-
       <nav aria-label="Mobile">
         <ul className="flex flex-col divide-y divide-line">
-          {links.map((item, index) => {
+          {siteConfig.nav.map((item, index) => {
             const isActive = pathname === item.href;
             return (
               <li key={item.href}>
@@ -89,7 +86,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, trigger
                   onClick={onClose}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "group flex items-baseline gap-4 py-5 font-serif text-[1.75rem] leading-none transition-colors",
+                    "flex items-baseline gap-4 py-5 font-serif text-[1.75rem] leading-none transition-colors",
                     isActive ? "text-purple" : "text-ink hover:text-purple-700"
                   )}
                 >
@@ -102,7 +99,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, trigger
                   >
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className={cn(isActive && "italic")}>{item.label}</span>
+                  <span>{item.label}</span>
                 </Link>
               </li>
             );
@@ -110,17 +107,27 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, trigger
         </ul>
       </nav>
 
-      <div className="pt-8">
-        <Button
-          variant="primary"
-          size="lg"
-          href={siteConfig.headerCta.href}
-          onClick={onClose}
-          className="w-full justify-between"
-        >
+      <div className="space-y-5 pt-8">
+        <div className="grid grid-cols-2 gap-3">
+          <a
+            href={contactDetails.phoneHref}
+            className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-line font-sans text-[15px] font-semibold text-ink"
+          >
+            <Phone className="h-4 w-4 stroke-[1.75]" aria-hidden="true" />
+            Call
+          </a>
+          <a
+            href={contactDetails.emailHref}
+            className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-line font-sans text-[15px] font-semibold text-ink"
+          >
+            <Mail className="h-4 w-4 stroke-[1.75]" aria-hidden="true" />
+            Email
+          </a>
+        </div>
+        <Button variant="primary" size="lg" href={siteConfig.headerCta.href} onClick={onClose} className="w-full justify-between">
           {siteConfig.headerCta.label}
         </Button>
-        <p className="mt-5 text-center font-sans text-[13px] text-ink-600">{siteConfig.tagline}</p>
+        <p className="text-center font-sans text-[13px] text-ink-600">{siteConfig.tagline}</p>
       </div>
     </div>
   );

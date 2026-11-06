@@ -1,60 +1,113 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { PageOpener } from "@/components/sections/PageOpener";
 import { ConsultationForm } from "@/components/forms/ConsultationForm";
 import { ConsultationFormSkeleton } from "@/components/ui/Skeleton";
-import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Heading } from "@/components/ui/Heading";
 import { contactData } from "@/data/contact";
-import { ContentSlot } from "@/components/ui/Draft";
+import { contactDetails } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Request a consultation with Kenenét Consultancy to discuss management, organizational change, and ERP implementation support.",
+    "Contact Kenenét Consultancy in Addis Ababa by phone, email or the contact form to discuss your organization.",
 };
 
+const channelClass =
+  "group flex items-start gap-4 rounded-xl p-3 -m-3 transition-colors hover:bg-paper";
+const iconWrap = "flex h-10 w-10 flex-none items-center justify-center rounded-full bg-purple-100 text-purple-700";
+
 export default function ContactPage() {
-  const { opener } = contactData;
+  const { opener, form, privacy } = contactData;
 
   return (
     <div className="flex flex-col">
-      {/* C-1 Opener */}
       <PageOpener title={opener.title} intro={opener.intro} />
 
-      {/* Form Section */}
-      <section className="w-full bg-paper py-16 md:py-24 border-b border-line">
-        <div className="max-w-[1336px] mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-            {/* Form (Columns 1-8) */}
-            <div className="lg:col-span-8">
+      <section className="w-full border-b border-line bg-paper py-16 md:py-24">
+        <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+            <div className="space-y-8 lg:col-span-7">
+              <Heading as="h2" variant="heading-md">
+                {form.heading}
+              </Heading>
               <Suspense fallback={<ConsultationFormSkeleton />}>
                 <ConsultationForm />
               </Suspense>
             </div>
 
-            {/* Aside Guidance (Columns 9-12) */}
-            <div className="lg:col-span-4 space-y-6 pt-2">
-              <SectionLabel as="h2">{contactData.form.guidance.heading}</SectionLabel>
-
-              <div className="bg-mist border border-line rounded-2xl p-6 sm:p-8 space-y-5">
-                <ul className="space-y-3">
-                  {contactData.form.guidance.items.map((item) => (
-                    <li key={item} className="flex items-start gap-3 font-sans text-[15px] text-ink-600 leading-relaxed">
-                      <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 bg-purple" aria-hidden="true" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
+            <aside aria-labelledby="direct-heading" className="lg:col-span-5">
+              <div className="space-y-7 rounded-2xl border border-line bg-mist p-7 sm:p-9 lg:sticky lg:top-28">
+                <h2 id="direct-heading" className="font-serif text-[1.5rem] text-ink">
+                  Reach us directly
+                </h2>
+                <ul className="space-y-6">
+                  <li>
+                    <a href={contactDetails.phoneHref} className={channelClass}>
+                      <span className={iconWrap}>
+                        <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
+                      </span>
+                      <span>
+                        <span className="block font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-ink-600">Phone</span>
+                        <span className="block font-sans text-[17px] text-ink group-hover:text-purple-700">
+                          {contactDetails.phoneDisplay}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href={contactDetails.emailHref} className={channelClass}>
+                      <span className={iconWrap}>
+                        <Mail className="h-[18px] w-[18px]" aria-hidden="true" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-ink-600">Email</span>
+                        <span className="block break-all font-sans text-[17px] text-ink group-hover:text-purple-700">
+                          {contactDetails.email}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href={contactDetails.mapsHref} target="_blank" rel="noopener noreferrer" className={channelClass}>
+                      <span className={iconWrap}>
+                        <MapPin className="h-[18px] w-[18px]" aria-hidden="true" />
+                      </span>
+                      <span>
+                        <span className="block font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-ink-600">Office</span>
+                        <address className="font-sans text-[16px] not-italic leading-relaxed text-ink">
+                          {contactDetails.addressLines.map((line) => (
+                            <span key={line} className="block">
+                              {line}
+                            </span>
+                          ))}
+                        </address>
+                        <span className="mt-1 block font-sans text-[14px] font-semibold text-purple-700 underline underline-offset-4">
+                          Open in Google Maps
+                          <span className="sr-only"> (opens in a new tab)</span>
+                        </span>
+                      </span>
+                    </a>
+                  </li>
                 </ul>
-                <p className="border-t border-line pt-4 font-sans text-[15px] text-ink">
-                  {contactData.form.guidance.note}
-                </p>
               </div>
+            </aside>
+          </div>
+        </div>
+      </section>
 
-              <ContentSlot
-                label="Verified direct contact channels: email, phone, address, hours"
-                gate="E-08 · G4"
-              />
-            </div>
+      <section id="privacy" aria-labelledby="privacy-heading" className="w-full scroll-mt-24 bg-paper py-16 md:py-20">
+        <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
+          <div className="max-w-3xl space-y-5">
+            <h2 id="privacy-heading" className="font-serif text-[1.75rem] text-ink">
+              {privacy.heading}
+            </h2>
+            {privacy.paragraphs.map((p) => (
+              <p key={p} className="font-sans text-[16px] leading-relaxed text-ink-600">
+                {p}
+              </p>
+            ))}
           </div>
         </div>
       </section>

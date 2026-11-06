@@ -3,47 +3,54 @@ export interface NavItem {
   href: string;
 }
 
-export interface SiteConfig {
-  brandName: string;
-  tagline: string;
-  supportingLine: string;
-  category: string;
-  nav: NavItem[];
-  headerCta: {
-    label: string;
-    href: string;
-  };
-  footer: {
-    navigate: NavItem[];
-    legalLine: string;
-    contactNote: string;
-  };
+export interface SocialLink {
+  /** Platform name as displayed, e.g. "LinkedIn". */
+  platform: string;
+  /** Verified, active profile URL. */
+  href: string;
 }
 
-export const siteConfig: SiteConfig = {
+export const contactDetails = {
+  addressLines: [
+    "Abenezer building, 5th floor",
+    "Kebena, Queen Elizabeth Street, opposite Belair",
+    "Addis Ababa, Ethiopia",
+  ],
+  phoneDisplay: "+251 95 662 5562",
+  phoneHref: "tel:+251956625562",
+  email: "kenenetconsultancy@gmail.com",
+  get emailHref() {
+    return `mailto:${this.email}`;
+  },
+  get mapsHref() {
+    const query = "Abenezer building, Kebena, Queen Elizabeth Street, Addis Ababa, Ethiopia";
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  },
+} as const;
+
+export const siteConfig = {
   brandName: "Kenenét Consultancy",
+  /** Unaccented alternate, used only in structured data and search metadata. */
+  alternateName: "Kenenet Consultancy",
   tagline: "Transforming Workplaces.",
   supportingLine: "Organizational Excellence for Sustainable Change.",
-  category: "Ethiopian organizational and management consultancy",
+  descriptor: "A management consultancy in Addis Ababa.",
+  eyebrow: "Management consultancy · Addis Ababa",
   nav: [
-    { label: "About Us", href: "/about" },
+    { label: "Home", href: "/" },
+    { label: "About Kenenét", href: "/about" },
     { label: "Our Services", href: "/services" },
     { label: "Our Approach", href: "/approach" },
-  ],
-  headerCta: {
-    label: "Request a Consultation",
-    href: "/contact#consultation-form",
-  },
-  footer: {
-    navigate: [
-      { label: "Home", href: "/" },
-      { label: "About Us", href: "/about" },
-      { label: "Our Services", href: "/services" },
-      { label: "Our Approach", href: "/approach" },
-      { label: "Contact Us", href: "/contact" },
-    ],
-    legalLine: "© 2026 Kenenét Consultancy.",
-    contactNote: "Reach out via our consultation form to discuss how Kenenét can support your organization.",
-  },
+    { label: "Contact Us", href: "/contact" },
+  ] satisfies NavItem[],
+  headerCta: { label: "Contact Kenenét", href: "/contact" },
+  /**
+   * Company channels. Add an entry only for an account that is verified and
+   * active; the footer renders nothing while this list is empty.
+   */
+  socialLinks: [] as SocialLink[],
+  /** Registered legal name is unconfirmed, so the brand name is used without a suffix. */
+  legalName: "Kenenét Consultancy",
 };
 
+export const closingCta = { label: "Contact Kenenét", href: "/contact" } as const;

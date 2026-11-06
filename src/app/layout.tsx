@@ -28,18 +28,18 @@ export const metadata: Metadata = {
     default: `${siteConfig.brandName} — ${siteConfig.tagline}`,
     template: `%s — ${siteConfig.brandName}`,
   },
-  description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
+  description: `${siteConfig.descriptor} ${siteConfig.supportingLine}`,
   alternates: { canonical: "./" },
   openGraph: {
     type: "website",
     siteName: siteConfig.brandName,
     title: `${siteConfig.brandName} — ${siteConfig.tagline}`,
-    description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
+    description: `${siteConfig.descriptor} ${siteConfig.supportingLine}`,
   },
   twitter: {
     card: "summary_large_image",
     title: `${siteConfig.brandName} — ${siteConfig.tagline}`,
-    description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
+    description: `${siteConfig.descriptor} ${siteConfig.supportingLine}`,
   },
 };
 
@@ -59,7 +59,7 @@ export default function RootLayout({
     "@type": "Organization",
     name: siteConfig.brandName,
     slogan: siteConfig.tagline,
-    description: `${siteConfig.category}. ${siteConfig.supportingLine}`,
+    description: `${siteConfig.descriptor} ${siteConfig.supportingLine}`,
     ...(site.isConfigured && {
       url: site.url,
       logo: `${site.url}/logo/kenenet_consultancy_logo_transparent.png`,

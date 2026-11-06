@@ -3,12 +3,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, AlertCircle, Check, Info } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { contactData } from "@/data/contact";
+import { contactData, interestOptions } from "@/data/contact";
 
 export const ConsultationForm: React.FC = () => {
   const searchParams = useSearchParams();
-  const defaultInterest = searchParams?.get("interest") === "erp" ? "erp" : "general";
+  const requestedInterest = searchParams?.get("interest") ?? "";
+  const defaultInterest = interestOptions.some((o) => o.value && o.value === requestedInterest) ? requestedInterest : "";
 
   const { form } = contactData;
   const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -16,7 +18,6 @@ export const ConsultationForm: React.FC = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     organization: "",
-    role: "",
     email: "",
     phone: "",
     interest: defaultInterest,
@@ -112,7 +113,6 @@ export const ConsultationForm: React.FC = () => {
         body: JSON.stringify({
           fullName: formData.fullName,
           organization: formData.organization,
-          role: formData.role,
           email: formData.email,
           phone: formData.phone,
           interest: formData.interest,
@@ -171,14 +171,6 @@ export const ConsultationForm: React.FC = () => {
           {form.success.body}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 pt-2">
-          <Button variant="secondary" size="md" href="/services" icon={false}>
-            Explore Our Services
-          </Button>
-          <Button variant="secondary" size="md" href="/approach" icon={false}>
-            See Our Approach
-          </Button>
-        </div>
       </div>
     );
   }
@@ -368,7 +360,7 @@ export const ConsultationForm: React.FC = () => {
           onChange={handleChange}
           className="w-full h-12 px-3.5 bg-white border border-ink-400 rounded-lg text-ink font-sans text-base transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple cursor-pointer"
         >
-          {form.interestOptions.map((opt) => (
+          {interestOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
             </option>
@@ -382,9 +374,6 @@ export const ConsultationForm: React.FC = () => {
           <label htmlFor="message" className="block font-sans text-[15px] font-semibold text-ink">
             {form.labels.message} <span className="text-purple">*</span>
           </label>
-          <span className="font-sans text-[13px] text-ink-600">
-            {form.helperText.message}
-          </span>
         </div>
         <textarea
           id="message"
@@ -439,8 +428,14 @@ export const ConsultationForm: React.FC = () => {
 
       {/* Privacy note */}
       <div className="flex items-center gap-2 text-[13px] font-sans text-ink-600 pt-1">
-        <Info className="w-4 h-4 text-purple flex-shrink-0" />
-        <p>{form.privacyLine}</p>
+        <Info className="w-4 h-4 text-purple flex-shrink-0" aria-hidden="true" />
+        <p>
+          How we use your details is set out in our{" "}
+          <Link href="/contact#privacy" className="font-semibold text-purple-700 underline underline-offset-4">
+            privacy notice
+          </Link>
+          .
+        </p>
       </div>
 
       {/* Submit Button */}

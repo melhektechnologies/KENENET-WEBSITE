@@ -1,67 +1,69 @@
 export const homeData = {
   hero: {
-    headlineWord1: "Transforming",
-    headlineWord2: "Workplaces",
-    supportingLine: "Organizational Excellence for Sustainable Change.",
-    descriptor:
-      "Kenenét Consultancy is an Ethiopian organizational and management consultancy. ERP solutions are available through our technology partner, with implementation support from Kenenét.",
-    primaryCta: {
-      label: "Request a Consultation",
-      href: "/contact#consultation-form",
-    },
-    secondaryCta: {
-      label: "Explore Our Services",
-      href: "/services",
-    },
-  },
-  credibility: [
-    "Ethiopian organizational and management consultancy",
-    "ERP solutions through a technology partner",
-  ],
-  statement: {
-    heading: "Who we are and what we do",
-    statementLead: "Most organizations know when something needs to change.",
-    statementRest:
-      "Fewer know how to change it without disturbing the work that keeps the business running.",
-    body: "Kenenét Consultancy is an Ethiopian organizational and management consultancy, focused on change that is built to last.",
-    link: {
-      label: "Learn About Kenenét",
-      href: "/about",
-    },
-  },
-  servicesIntro: {
-    heading: "Our Services",
     intro:
-      "Explore what Kenenét Consultancy offers, including ERP solutions through our technology partner.",
-    link: {
-      label: "View all services",
-      href: "/services",
-    },
+      "Kenenét Consultancy is a management consultancy in Addis Ababa. We help Ethiopian organizations replace inefficient workflows, uneven policy compliance and inconsistent workplace standards with structure, discipline and systems that last.",
+    primaryCta: { label: "See how we work", href: "/approach" },
+    secondaryCta: { label: "Talk to Kenenét", href: "/contact" },
   },
-  erpBand: {
-    label: "ERP Solutions",
-    heading: "ERP, delivered through a technology partner.",
-    body: "Some organizations reach a point where spreadsheets and disconnected tools no longer keep up. For those organizations, we offer ERP solutions through our technology partner, with Kenenét Consultancy providing implementation support.",
-    link: {
-      label: "How ERP works with Kenenét",
-      href: "/services#erp",
+  principles: [
+    {
+      title: "Built around your operation.",
+      body: "Every engagement starts from your own workflows, people and policies.",
     },
+    {
+      title: "Seen first-hand.",
+      body: "We evaluate on site, across departments, through observation and interviews.",
+    },
+    {
+      title: "Checked afterwards.",
+      body: "Periodic post-implementation reviews measure performance gains and keep compliance in place.",
+    },
+  ],
+  valuesLine: "Guided by honesty, integrity, cost-effective solutions and excellence.",
+  problem: {
+    label: "The challenge",
+    heading: "Excellence needs structure.",
+    body: "In a competitive market, organizational excellence decides long-term success. Yet many Ethiopian companies struggle with three things that quietly hold them back.",
+    items: [
+      {
+        title: "Inefficient workflows",
+        body: "Work that takes longer than it should, and time lost along the way.",
+      },
+      {
+        title: "Weak policy adherence",
+        body: "Rules and procedures that exist on paper but are not consistently followed.",
+      },
+      {
+        title: "Unstandardized workplace ethics",
+        body: "Professional standards and conduct that differ from one team to the next.",
+      },
+    ],
+    closing:
+      "Kenenét closes these gaps through tailored workplace transformation, guiding organizations toward structured productivity, discipline and a high-performance culture.",
   },
-  approachPreview: {
-    heading: "Our Approach",
-    body: "Change is easier to commit to when you can see how the work will be done. Our Approach page explains how Kenenét works with organizations.",
-    link: {
-      label: "See How We Work",
-      href: "/approach",
-    },
+  whatWeDo: {
+    label: "What we do",
+    heading: "A close look at how your organization actually works.",
+    body: "We assess and restructure operations at every level, from front-desk operations to executive management, so that policy compliance, punctuality, professional standards and corporate governance line up. Every engagement starts from the client\u2019s own operating environment, not from a template.",
+  },
+  approach: {
+    label: "Our approach",
+    heading: "Five stages, from diagnosis to lasting change.",
+    link: { label: "Read the full approach", href: "/approach" },
+  },
+  services: {
+    label: "Services",
+    heading: "Ten services, four areas.",
+    erpLine: "ERP solutions are available through our technology partner.",
+    link: { label: "View all services", href: "/services" },
+  },
+  leadership: {
+    label: "Leadership",
+    body: "Led by Bayush Mamo, Founder and Managing Director, who brings more than 14 years of experience in administration and management.",
+    link: { label: "Meet the founder", href: "/about#founder" },
   },
   closing: {
-    heading: "Start with a conversation about your organization.",
-    body: "Tell us about your organization and what you are looking to change.",
-    primaryCta: {
-      label: "Request a Consultation",
-      href: "/contact#consultation-form",
-    },
+    heading: "Start with a conversation.",
+    body: "Tell us about your organization. We will discuss how we would approach it.",
   },
 };
-

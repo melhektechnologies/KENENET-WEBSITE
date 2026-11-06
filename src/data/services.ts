@@ -1,45 +1,128 @@
+export interface Service {
+  slug: string;
+  name: string;
+  /** Defining line shown directly under the name, where the bare name could be misread. */
+  definingLine?: string;
+  /** Omitted while a description is on hold (e.g. pending a licensing check). */
+  description?: string;
+}
+
+export interface ServiceGroup {
+  slug: string;
+  name: string;
+  services: Service[];
+}
+
+export const serviceGroups: ServiceGroup[] = [
+  {
+    slug: "management-organization-projects",
+    name: "Management, Organization & Projects",
+    services: [
+      {
+        slug: "management-consulting",
+        name: "Management Consulting",
+        description:
+          "Advisory support for owners and executives on how an organization is structured, managed and measured.",
+      },
+      {
+        slug: "professional-organizing",
+        name: "Professional Organizing",
+        definingLine: "Organizational design and structuring.",
+        description:
+          "Designing and redesigning how an organization is set up: team formations, lines of reporting, communication channels and the systems that connect them.",
+      },
+      {
+        slug: "project-management",
+        name: "Project Management",
+        description: "Planning, coordination and delivery oversight for client projects.",
+      },
+      {
+        slug: "event-organizing",
+        name: "Event Organizing",
+        description: "Planning and running business events.",
+      },
+    ],
+  },
+  {
+    slug: "systems-workforce-operations",
+    name: "Systems & Workforce Operations",
+    services: [
+      {
+        slug: "corporate-system-creation",
+        name: "Corporate System Creation",
+        description:
+          "Developing the systems and procedures a company runs on, including operating frameworks, standard operating procedures and management reporting, tailored to the client\u2019s operation.",
+      },
+      {
+        slug: "workforce-management",
+        name: "Workforce Management",
+        description:
+          "Structuring how people, roles and working time are organized so that work is done reliably.",
+      },
+    ],
+  },
+  {
+    slug: "people-hr",
+    name: "People & HR",
+    services: [
+      {
+        slug: "human-resource-service-solutions",
+        name: "Human Resource Service & Solutions",
+        description:
+          "HR documentation and practice: job descriptions, employee handbooks, codes of conduct and targeted capacity-building programs.",
+      },
+      {
+        // Description withheld until the insurance licensing question is answered.
+        slug: "employee-insurance-facilitation",
+        name: "Employee Insurance Facilitation",
+      },
+    ],
+  },
+  {
+    slug: "business-setup-planning",
+    name: "Business Setup & Planning",
+    services: [
+      {
+        slug: "company-formation",
+        name: "Company Formation",
+        description: "Practical support for founders and investors setting up a new company.",
+      },
+      {
+        slug: "business-plan-feasibility-study",
+        name: "Business Plan & Feasibility Study",
+        description:
+          "Business plans and feasibility studies for new ventures and expansion, including identifying the resources growth requires.",
+      },
+    ],
+  },
+];
+
+export const allServices: Service[] = serviceGroups.flatMap((g) => g.services);
+
+export const erpStatement =
+  "Kenenét provides ERP solutions through its technology partner, including implementation support.";
+
 export const servicesData = {
   opener: {
     title: "Our Services",
     intro:
-      "What Kenenét Consultancy offers, including ERP solutions delivered through our technology partner.",
+      "Kenenét\u2019s services cover how an organization is designed, staffed, systemized and planned. Each engagement is shaped around the client\u2019s own operation.",
+  },
+  umbrella: {
+    text: "Our services are delivered through our five-stage approach to workplace transformation.",
+    link: { label: "Read the approach", href: "/approach" },
+  },
+  engagementTypes: {
+    heading: "Engagement types",
+    body: "Our engagements include due diligence reviews, systems and procedures development, work on manufacturing processes, quality systems integration and management reporting systems.",
   },
   erp: {
-    label: "Delivered through our technology partner",
-    heading: "ERP Solutions",
-    whatErpIs:
-      "An ERP (Enterprise Resource Planning) system brings an organization\u2019s core business functions together in a single, coordinated system.",
-    model:
-      "ERP solutions are provided through our technology partner, with Kenenét Consultancy providing implementation support.",
-    partner: {
-      label: "Our technology partner",
-      heading: "The ERP solution",
-      body: "Provides the ERP solution.",
-    },
-    kenenet: {
-      label: "Kenenét Consultancy",
-      heading: "Implementation support",
-      body: "Provides implementation support.",
-    },
-    cta: {
-      label: "Discuss ERP With Us",
-      href: "/contact?interest=erp#consultation-form",
-    },
-  },
-  notSure: {
-    heading: "Not sure where to start?",
-    body: "Tell us about your organization and what you are looking to change.",
-    cta: {
-      label: "Request a Consultation",
-      href: "/contact#consultation-form",
-    },
+    heading: "ERP solutions",
+    body: erpStatement,
+    link: { label: "Discuss ERP with us", href: "/contact?interest=erp#consultation-form" },
   },
   closing: {
-    heading: "Find the right support for your organization.",
-    body: "Tell us about the challenges you are addressing.",
-    primaryCta: {
-      label: "Request a Consultation",
-      href: "/contact#consultation-form",
-    },
+    heading: "Not sure where to start?",
+    body: "Describe your organization\u2019s situation. We will discuss where to begin.",
   },
 };

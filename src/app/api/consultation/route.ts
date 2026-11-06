@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { contactData } from "@/data/contact";
+import { interestOptions } from "@/data/contact";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /* ── Limits ─────────────────────────────────────────────────────────────── */
-const MAX = { fullName: 120, organization: 160, role: 120, email: 254, phone: 40, message: 4000 };
-const ALLOWED_INTERESTS = new Set(contactData.form.interestOptions.map((o) => o.value));
+const MAX = { fullName: 120, organization: 160, email: 254, phone: 40, message: 4000 };
+const ALLOWED_INTERESTS = new Set(interestOptions.map((o) => o.value).filter(Boolean));
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_FILL_MS = 1500; // humans cannot complete the form faster
 const MAX_BODY_BYTES = 12 * 1024;
@@ -91,7 +91,13 @@ export async function POST(request: Request) {
     return json({ ok: false, error: "forbidden" }, 403);
   }
 
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim().slice(0, 64) || "unknown";
+  // Platform-set headers first: x-forwarded-for alone is client-spoofable.
+  const ip =
+    (request.headers.get("x-real-ip") ||
+      request.headers.get("x-vercel-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-forwarded-for")?.split(",")[0])
+      ?.trim()
+      .slice(0, 64) || "unknown";
   if (rateLimited(ip)) {
     return json({ ok: false, error: "rate_limited" }, 429, { "Retry-After": String(WINDOW_MS / 1000) });
   }
@@ -124,7 +130,6 @@ export async function POST(request: Request) {
   const data = {
     fullName: clean(raw.fullName, MAX.fullName),
     organization: clean(raw.organization, MAX.organization),
-    role: clean(raw.role, MAX.role),
     email: clean(raw.email, MAX.email),
     phone: clean(raw.phone, MAX.phone),
     interest: clean(raw.interest, 40),
@@ -151,14 +156,13 @@ export async function POST(request: Request) {
   }
 
   const interestLabel =
-    contactData.form.interestOptions.find((o) => o.value === data.interest)?.label ?? "Not specified";
+    interestOptions.find((o) => o.value === data.interest)?.label ?? "Not specified";
 
   const text = [
-    "New consultation request — Kenenét Consultancy website",
+    "New inquiry — Kenenét Consultancy website",
     "",
     `Name:          ${oneLine(data.fullName)}`,
     `Organization:  ${oneLine(data.organization)}`,
-    `Role:          ${oneLine(data.role) || "—"}`,
     `Email:         ${oneLine(data.email)}`,
     `Phone:         ${oneLine(data.phone) || "—"}`,
     `Interest:      ${interestLabel}`,
@@ -178,7 +182,7 @@ export async function POST(request: Request) {
         from,
         to: to.split(",").map((s) => s.trim()).filter(Boolean),
         reply_to: data.email,
-        subject: oneLine(`Consultation request — ${data.organization}`).slice(0, 150),
+        subject: oneLine(`Website inquiry — ${data.organization}`).slice(0, 150),
         text,
       }),
       signal: AbortSignal.timeout(12_000),
