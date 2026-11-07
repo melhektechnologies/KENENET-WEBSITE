@@ -30,12 +30,7 @@ export const ConsultationForm: React.FC = () => {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorKind, setErrorKind] = useState<"validation" | "delivery">("delivery");
   const [errorMessage, setErrorMessage] = useState("");
-  const mountedAt = useRef<number>(0);
   const successRef = useRef<HTMLHeadingElement>(null);
-
-  useEffect(() => {
-    mountedAt.current = Date.now();
-  }, []);
 
   useEffect(() => {
     if (status === "success") successRef.current?.focus();
@@ -119,7 +114,6 @@ export const ConsultationForm: React.FC = () => {
           message: formData.message,
           consent: formData.consent,
           website: formData.website,
-          elapsedMs: Date.now() - mountedAt.current,
         }),
         signal: AbortSignal.timeout(20_000),
       });

@@ -11,10 +11,8 @@ const routes: { path: string; priority: number }[] = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const { url } = getSiteUrl();
-  const lastModified = new Date();
   return routes.map(({ path, priority }) => ({
     url: `${url}${path}`,
-    lastModified,
     changeFrequency: "monthly",
     priority,
   }));

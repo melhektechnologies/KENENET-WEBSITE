@@ -301,8 +301,8 @@ body {
    Progressive enhancement: browsers without animation-timeline simply show
    the content. No JavaScript, no layout shift, no hidden-until-JS flash. */
 @keyframes revealUp {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(22px); }
+  to   { transform: translateY(0); }
 }
 @supports (animation-timeline: view()) {
   .reveal {

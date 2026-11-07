@@ -8,7 +8,6 @@ export const dynamic = "force-dynamic";
 const MAX = { fullName: 120, organization: 160, email: 254, phone: 40, message: 4000 };
 const ALLOWED_INTERESTS = new Set(interestOptions.map((o) => o.value).filter(Boolean));
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MIN_FILL_MS = 1500; // humans cannot complete the form faster
 const MAX_BODY_BYTES = 12 * 1024;
 
 /* ── Best-effort rate limit (per warm instance; not a security boundary) ── */
@@ -121,9 +120,8 @@ export async function POST(request: Request) {
     return json({ ok: false, error: "invalid_request" }, 400);
   }
 
-  /* Bots: honeypot filled or form completed implausibly fast → pretend success, send nothing */
-  const elapsed = Number(raw.elapsedMs);
-  if (clean(raw.website, 200) || (Number.isFinite(elapsed) && elapsed < MIN_FILL_MS)) {
+  /* A filled honeypot is ignored; valid submissions must reach the mail provider. */
+  if (clean(raw.website, 200)) {
     return json({ ok: true });
   }
 
