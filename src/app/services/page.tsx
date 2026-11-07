@@ -6,17 +6,16 @@ import { ClosingBand } from "@/components/sections/ClosingBand";
 import { Heading } from "@/components/ui/Heading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ArrowLink } from "@/components/ui/ArrowLink";
-import { Button } from "@/components/ui/Button";
 import { serviceGroups, servicesData } from "@/data/services";
 
 export const metadata: Metadata = {
   title: "Our Services",
   description:
-    "Management consulting, organizational design, corporate systems, workforce management, HR solutions, company formation and business planning from Kenenét Consultancy in Addis Ababa.",
+    "Management consulting, professional organizing, corporate systems, HR and workforce services, company formation, project and event management, and business planning from Kenenét Consultancy in Addis Ababa.",
 };
 
 export default function ServicesPage() {
-  const { opener, umbrella, engagementTypes, erp, closing } = servicesData;
+  const { opener, umbrella, engagementTypes, closing } = servicesData;
 
   return (
     <div className="flex flex-col">
@@ -39,14 +38,6 @@ export default function ServicesPage() {
               </a>
             </li>
           ))}
-          <li className="flex-none">
-            <a
-              href="#erp"
-              className="inline-flex h-10 items-center rounded-full px-4 font-sans text-[14px] font-medium text-ink-600 transition-colors hover:bg-mist hover:text-purple-700"
-            >
-              ERP
-            </a>
-          </li>
         </ul>
       </nav>
 
@@ -106,25 +97,6 @@ export default function ServicesPage() {
               </Heading>
             </div>
             <p className="max-w-[62ch] font-sans text-[17px] leading-relaxed text-ink-600 lg:col-span-8">{engagementTypes.body}</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="erp" aria-labelledby="erp-heading" className="w-full scroll-mt-32 border-t border-line bg-paper py-16 md:py-24">
-        <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
-          <div className="reveal grid grid-cols-1 items-center gap-8 rounded-2xl border border-line p-8 sm:p-12 lg:grid-cols-12">
-            <div className="space-y-4 lg:col-span-8">
-              <SectionLabel>Technology partner</SectionLabel>
-              <Heading as="h2" id="erp-heading" variant="heading-xl">
-                {erp.heading}
-              </Heading>
-              <p className="max-w-[58ch] font-sans text-[17px] leading-relaxed text-ink-600">{erp.body}</p>
-            </div>
-            <div className="lg:col-span-4 lg:justify-self-end">
-              <Button variant="secondary" size="lg" href={erp.link.href}>
-                {erp.link.label}
-              </Button>
-            </div>
           </div>
         </div>
       </section>

@@ -3,7 +3,6 @@ import { allServices } from "./services";
 export const interestOptions = [
   { value: "", label: "Select an option" },
   ...allServices.map((s) => ({ value: s.slug, label: s.name })),
-  { value: "erp", label: "ERP solutions" },
   { value: "not-sure", label: "Not sure yet" },
 ];
 

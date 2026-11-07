@@ -25,7 +25,7 @@ export default function ContactPage() {
     <div className="flex flex-col">
       <PageOpener title={opener.title} intro={opener.intro} />
 
-      <section className="w-full border-b border-line bg-paper py-16 md:py-24">
+      <section id={form.id} className="w-full scroll-mt-24 border-b border-line bg-paper py-16 md:py-24">
         <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="space-y-8 lg:col-span-7">

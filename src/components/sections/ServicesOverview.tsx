@@ -50,16 +50,6 @@ export const ServicesOverview: React.FC = () => {
                 </div>
               ))}
             </div>
-
-            <p className="mt-12 flex items-center gap-3 border-t border-line pt-6 font-sans text-[16px] text-ink-600">
-              <span className="h-2 w-2 flex-none rounded-full bg-orange" aria-hidden="true" />
-              <span>
-                {services.erpLine}{" "}
-                <Link href="/services#erp" className="font-semibold text-purple-700 underline underline-offset-4 hover:text-purple">
-                  About ERP
-                </Link>
-              </span>
-            </p>
           </div>
         </div>
       </div>

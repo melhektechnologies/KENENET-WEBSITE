@@ -171,7 +171,6 @@ export const ConsultationForm: React.FC = () => {
 
   return (
     <form
-      id={form.id}
       onSubmit={handleSubmit}
       className="space-y-6 max-w-2xl bg-paper"
       noValidate

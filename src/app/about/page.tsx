@@ -13,7 +13,7 @@ import { contactDetails } from "@/data/site";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Kenenét Consultancy is a privately owned management consulting firm in Addis Ababa, working with industrial, commercial and governmental organizations on structure, operations and performance.",
+    "Kenenét Consultancy is a privately owned management consulting and organizing business in Addis Ababa, serving the services, industrial, commercial and governmental sectors.",
 };
 
 export default function AboutPage() {
@@ -87,7 +87,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="founder-heading" className="w-full border-t border-line bg-paper py-20 md:py-28">
+      <section id="founder" aria-labelledby="founder-heading" className="w-full scroll-mt-24 border-t border-line bg-paper py-20 md:py-28">
         <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="space-y-6 lg:col-span-4">

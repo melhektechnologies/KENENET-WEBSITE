@@ -54,7 +54,6 @@ export const homeData = {
   services: {
     label: "Services",
     heading: "Ten services, four areas.",
-    erpLine: "ERP solutions are available through our technology partner.",
     link: { label: "View all services", href: "/services" },
   },
   leadership: {

@@ -1,7 +1,7 @@
 export const founder = {
   name: "Bayush Mamo",
   title: "Founder and Managing Director",
-  bio: "Bayush Mamo founded Kenenét Consultancy and serves as its Managing Director. Bayush brings more than 14 years of experience in administration and management and holds a Master\u2019s degree in Project Management from KROK University in Kyiv, Ukraine. Bayush has led and consulted for companies across various industries.",
+  bio: "Bayush Mamo founded Kenenét Consultancy and serves as its Managing Director. Bayush brings more than 14 years of experience in administration and management and holds a Master\u2019s degree in Project Management from KROK University in Kyiv, Ukraine. Bayush has led and consulted for companies across various industries, achieving notable client outcomes.",
   facts: [
     { term: "Experience", detail: "More than 14 years in administration and management" },
     { term: "Education", detail: "Master\u2019s in Project Management, KROK University, Kyiv" },
@@ -21,13 +21,13 @@ export const aboutData = {
   opener: {
     title: "About Kenenét Consultancy",
     intro:
-      "Kenenét Consultancy is a privately owned management consulting firm in Addis Ababa. We work with organizations in the industrial, commercial and governmental sectors on how they are structured, how they run and how they perform.",
+      "Kenenét Consultancy is a privately owned management consulting and organizing business in Addis Ababa. Our work focuses primarily on the services industry and also serves industrial, commercial and governmental sectors, helping organizations improve how they are structured, how they operate and how they perform.",
   },
   whatWeDo: {
     heading: "What we do",
     paragraphs: [
       "We look closely at the working life of an organization: team formations, systems, lines of reporting, communication channels and more. We then design, or redesign, the organization so that its structure and systems support its strategy.",
-      "Our aim is for that work to support greater efficiency, faster decision-making, better quality in products and services, stronger customer relationships, a more motivated workforce and better commercial performance.",
+      "The intended outcomes are greater efficiency, faster decision-making, consistent quality in products and services, improved profits, stronger customer relationships and a more motivated workforce.",
     ],
   },
   objective: {
@@ -37,7 +37,7 @@ export const aboutData = {
   philosophy: {
     heading: "Our philosophy",
     lead: "We believe lasting performance comes from structure: clear roles, working systems and policies people actually follow.",
-    body: "A well-structured organization produces consistent quality of work, better coordination and higher staff morale, and those raise performance.",
+    body: "A robust organizational framework supports expansion, helps identify resources for growth and improves efficiency by reducing waste. A clear chain of command and reporting lines strengthen accountability and make outcomes easier to measure and analyze. Consistent work quality, better coordination, higher staff morale and continued attention to organizational design support stronger performance.",
   },
   values: {
     heading: "Our values",

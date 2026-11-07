@@ -23,7 +23,7 @@ export const contactDetails = {
     return `mailto:${this.email}`;
   },
   get mapsHref() {
-    const query = "Abenezer building, Kebena, Queen Elizabeth Street, Addis Ababa, Ethiopia";
+    const query = "Abenezer building, 5th floor, Kebena, Queen Elizabeth Street, opposite Belair, Addis Ababa, Ethiopia";
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
   },
 } as const;
@@ -34,7 +34,7 @@ export const siteConfig = {
   alternateName: "Kenenet Consultancy",
   tagline: "Transforming Workplaces.",
   supportingLine: "Organizational Excellence for Sustainable Change.",
-  descriptor: "A management consultancy in Addis Ababa.",
+  descriptor: "A privately owned management consulting and organizing business in Addis Ababa.",
   eyebrow: "Management consultancy · Addis Ababa",
   nav: [
     { label: "Home", href: "/" },

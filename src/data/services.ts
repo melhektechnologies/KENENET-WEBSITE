@@ -99,27 +99,19 @@ export const serviceGroups: ServiceGroup[] = [
 
 export const allServices: Service[] = serviceGroups.flatMap((g) => g.services);
 
-export const erpStatement =
-  "Kenenét provides ERP solutions through its technology partner, including implementation support.";
-
 export const servicesData = {
   opener: {
     title: "Our Services",
     intro:
-      "Kenenét\u2019s services cover how an organization is designed, staffed, systemized and planned. Each engagement is shaped around the client\u2019s own operation.",
+      "Kenenét\u2019s services cover how an organization is designed, staffed, systemized and planned. We respond to demand for organizing and consulting services through assessment, research, analysis, drafting, implementation and evaluation, building collaborative client relationships along the way.",
   },
   umbrella: {
     text: "Our services are delivered through our five-stage approach to workplace transformation.",
     link: { label: "Read the approach", href: "/approach" },
   },
   engagementTypes: {
-    heading: "Engagement types",
-    body: "Our engagements include due diligence reviews, systems and procedures development, work on manufacturing processes, quality systems integration and management reporting systems.",
-  },
-  erp: {
-    heading: "ERP solutions",
-    body: erpStatement,
-    link: { label: "Discuss ERP with us", href: "/contact?interest=erp#consultation-form" },
+    heading: "Organizing & Consulting Excellence",
+    body: "Engaging solutions include due diligence reviews; development of company systems and procedures; work on manufacturing processes; and quality systems integration. We also develop management reporting systems to measure progress in both service and product development.",
   },
   closing: {
     heading: "Not sure where to start?",
