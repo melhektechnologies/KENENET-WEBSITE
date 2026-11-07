@@ -98,6 +98,7 @@ export default function AboutPage() {
                   alt={founder.portrait.alt}
                   width={480}
                   height={600}
+                  sizes="(max-width: 639px) calc(100vw - 2.5rem), 24rem"
                   className="aspect-[4/5] w-full max-w-sm rounded-2xl object-cover"
                 />
               )}

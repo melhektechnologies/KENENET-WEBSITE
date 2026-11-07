@@ -6,8 +6,10 @@ export const founder = {
     { term: "Experience", detail: "More than 14 years in administration and management" },
     { term: "Education", detail: "Master\u2019s in Project Management, KROK University, Kyiv" },
   ],
-  /** Set only once a portrait is supplied with written permission for web use. */
-  portrait: null as { src: string; alt: string } | null,
+  portrait: {
+    src: "/people/bayush-mamo.webp",
+    alt: "Portrait of Bayush Mamo, Founder and Managing Director of Kenenét Consultancy.",
+  },
 };
 
 export const values = [

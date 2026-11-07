@@ -4,7 +4,7 @@ import { ArrowLink } from "@/components/ui/ArrowLink";
 import { homeData } from "@/data/home";
 import { founder } from "@/data/about";
 
-/** H-6: founder introduction. Without a cleared portrait it runs as name + facts only. */
+/** Homepage leadership teaser; the portrait and full biography are on the About page. */
 export const LeadershipSection: React.FC = () => {
   const { leadership } = homeData;
 
