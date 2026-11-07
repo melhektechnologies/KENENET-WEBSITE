@@ -48,7 +48,14 @@ export const siteConfig = {
    * Company channels. Add an entry only for an account that is verified and
    * active; the footer renders nothing while this list is empty.
    */
-  socialLinks: [] as SocialLink[],
+  socialLinks: [
+    { platform: "TikTok", href: "https://www.tiktok.com/@kenenetconsultancy" },
+    { platform: "Telegram", href: "https://t.me/Kenenet_Consultancy" },
+    {
+      platform: "LinkedIn",
+      href: "https://www.linkedin.com/company/kenen%C3%A9t-consultancy/posts/?viewAsMember=true",
+    },
+  ] satisfies SocialLink[],
   /** Registered legal name is unconfirmed, so the brand name is used without a suffix. */
   legalName: "Kenenét Consultancy",
 };
