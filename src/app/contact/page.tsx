@@ -28,7 +28,7 @@ export default function ContactPage() {
       <section id={form.id} className="w-full scroll-mt-24 border-b border-line bg-paper py-16 md:py-24">
         <div className="mx-auto max-w-[1336px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-            <div className="space-y-8 lg:col-span-7">
+            <div className="reveal space-y-8 lg:col-span-7">
               <Heading as="h2" variant="heading-md">
                 {form.heading}
               </Heading>
@@ -37,7 +37,7 @@ export default function ContactPage() {
               </Suspense>
             </div>
 
-            <aside aria-labelledby="direct-heading" className="lg:col-span-5">
+            <aside aria-labelledby="direct-heading" className="reveal lg:col-span-5">
               <div className="space-y-7 rounded-2xl border border-line bg-mist p-7 sm:p-9 lg:sticky lg:top-28">
                 <h2 id="direct-heading" className="font-serif text-[1.5rem] text-ink">
                   Reach us directly

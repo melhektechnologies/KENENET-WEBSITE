@@ -78,7 +78,7 @@ export default function AboutPage() {
           </div>
           <dl className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {values.map((v) => (
-              <div key={v.name} className="reveal space-y-3 border-t border-ink/80 pt-5">
+              <div key={v.name} className="reveal space-y-3 border-t border-ink/80 pt-5 transition-transform duration-300 ease-emphasis motion-safe:hover:-translate-y-1">
                 <dt className="font-serif text-[1.35rem] leading-snug text-ink">{v.name}</dt>
                 <dd className="font-sans text-[15px] leading-relaxed text-ink-600">{v.line}</dd>
               </div>

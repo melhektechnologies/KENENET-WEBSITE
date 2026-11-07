@@ -61,7 +61,7 @@ export default function ServicesPage() {
               <ul className="divide-y divide-line border-y border-line lg:col-span-8">
                 {group.services.map((service) => (
                   <li key={service.slug} id={service.slug} className="reveal scroll-mt-36 py-8">
-                    <article className="grid grid-cols-1 gap-3 md:grid-cols-12 md:gap-8">
+                    <article className="grid grid-cols-1 gap-3 transition-transform duration-300 ease-emphasis motion-safe:hover:translate-x-1 md:grid-cols-12 md:gap-8">
                       <div className="space-y-1 md:col-span-5">
                         <h3 className="font-serif text-[1.5rem] leading-snug text-ink">{service.name}</h3>
                         {service.definingLine && (

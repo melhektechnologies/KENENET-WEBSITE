@@ -20,7 +20,7 @@ export const PageOpener: React.FC<PageOpenerProps> = ({ title, intro, children }
           alt=""
           width={512}
           height={512}
-          className="absolute -right-10 top-1/2 hidden w-[26rem] -translate-y-1/2 opacity-[0.06] md:block"
+          className="animate-drift absolute -right-10 top-1/2 hidden w-[26rem] -translate-y-1/2 opacity-[0.06] md:block"
         />
       </div>
 

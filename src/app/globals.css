@@ -270,8 +270,8 @@ body {
 
 /* ─── Slow ambient drift for decorative orbs ────────────────────────────── */
 @keyframes drift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(-3%, 4%, 0) scale(1.06); }
+  0%, 100% { translate: 0 0; scale: 1; }
+  50%      { translate: -2.5% 3%; scale: 1.035; }
 }
 .animate-drift      { animation: drift 18s ease-in-out infinite; }
 .animate-drift-slow { animation: drift 26s ease-in-out infinite reverse; }
@@ -301,14 +301,27 @@ body {
    Progressive enhancement: browsers without animation-timeline simply show
    the content. No JavaScript, no layout shift, no hidden-until-JS flash. */
 @keyframes revealUp {
-  from { transform: translateY(22px); }
-  to   { transform: translateY(0); }
+  from { translate: 0 32px; scale: 0.985; }
+  to   { translate: 0 0; scale: 1; }
 }
 @supports (animation-timeline: view()) {
   .reveal {
     animation: revealUp linear both;
     animation-timeline: view();
-    animation-range: entry 5% entry 45%;
+    animation-range: entry 0% entry 55%;
+  }
+}
+
+/* The approach spine fills as the five stages move through the viewport. */
+@keyframes drawApproachLine {
+  from { transform: scaleY(0.06); }
+  to   { transform: scaleY(1); }
+}
+@supports (animation-timeline: view()) {
+  .approach-progress-line {
+    animation: drawApproachLine linear both;
+    animation-timeline: view();
+    animation-range: entry 5% exit 85%;
   }
 }
 
@@ -322,5 +335,6 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .reveal { animation: none !important; opacity: 1 !important; transform: none !important; translate: none !important; scale: none !important; }
+  .approach-progress-line { animation: none !important; transform: none !important; }
 }

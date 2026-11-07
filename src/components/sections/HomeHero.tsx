@@ -22,7 +22,7 @@ export const HomeHero: React.FC = () => {
           width={512}
           height={512}
           priority
-          className="absolute -right-32 top-[42%] hidden w-[40rem] max-w-none -translate-y-1/2 opacity-[0.09] lg:block"
+          className="animate-drift-slow absolute -right-32 top-[42%] hidden w-[40rem] max-w-none -translate-y-1/2 opacity-[0.09] lg:block"
         />
       </div>
 
@@ -64,7 +64,7 @@ export const HomeHero: React.FC = () => {
         <div className="mt-16 border-t border-line pt-10 lg:mt-24">
           <ul className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
             {principles.map((p) => (
-              <li key={p.title} className="space-y-2">
+              <li key={p.title} className="reveal space-y-2">
                 <span className="block h-[3px] w-8 rounded-full bg-orange" aria-hidden="true" />
                 <h2 className="pt-2 font-serif text-[1.35rem] leading-snug text-ink">{p.title}</h2>
                 <p className="max-w-sm font-sans text-[16px] leading-relaxed text-ink-600">{p.body}</p>

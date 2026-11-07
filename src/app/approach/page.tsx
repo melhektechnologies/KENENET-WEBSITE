@@ -34,7 +34,7 @@ export default function ApproachPage() {
             </div>
 
             <ol className="relative lg:col-span-8">
-              <span aria-hidden="true" className="absolute bottom-6 left-[1.6rem] top-6 w-px bg-purple/20 sm:left-[2.1rem]" />
+              <span aria-hidden="true" className="approach-progress-line absolute bottom-6 left-[1.6rem] top-6 w-px origin-top bg-gradient-to-b from-orange via-purple/70 to-purple/20 sm:left-[2.1rem]" />
               {stages.map((stage, i) => (
                 <li key={stage.number} id={`stage-${i + 1}`} className="reveal relative scroll-mt-28 pb-12 last:pb-0">
                   <div className="flex gap-6 sm:gap-8">
