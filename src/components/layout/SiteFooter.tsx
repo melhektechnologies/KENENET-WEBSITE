@@ -83,9 +83,18 @@ export const SiteFooter: React.FC = () => {
           <p>
             {"\u00A9"} {year} {siteConfig.legalName}. All rights reserved.
           </p>
-          <Link href="/contact#privacy" className={linkClass}>
-            Privacy
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link href="/contact#privacy" className={linkClass}>
+              Privacy
+            </Link>
+            <span>
+              Powered by{" "}
+              <a href="https://www.melhek.com.et" target="_blank" rel="noopener noreferrer" className={linkClass}>
+                Melhek Technologies
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </footer>
