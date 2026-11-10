@@ -36,7 +36,7 @@ export default async function OpengraphImage() {
           }}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logoSrc} alt="" width={300} height={135} />
+        <img src={logoSrc} alt="" width={300} height={133} />
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 96, lineHeight: 1.02, letterSpacing: -2, color: "#1C1720", fontWeight: 700 }}>
             Transforming

@@ -39,7 +39,7 @@ export const SiteHeader: React.FC = () => {
       >
         <div className="mx-auto flex h-full max-w-[1336px] items-center justify-between gap-6 px-5 sm:px-8 lg:px-12">
           <Link href="/" className="-m-2 flex items-center rounded p-2" aria-label="Kenenét Consultancy, home">
-            <BrandLogo width={124} priority alt="" />
+            <BrandLogo width={128} priority alt="" />
           </Link>
 
           <nav aria-label="Primary" className="hidden items-center xl:flex">
