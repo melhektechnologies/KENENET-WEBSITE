@@ -30,6 +30,7 @@ export const StagePreview: React.FC = () => {
             <li key={stage.number} className="reveal relative">
               <Link
                 href={`/approach#stage-${i + 1}`}
+                suppressHydrationWarning
                 className="group flex h-full flex-col gap-4 border-t border-purple/25 py-6 transition-colors hover:border-purple sm:pr-6"
               >
                 <span

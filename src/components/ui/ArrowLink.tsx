@@ -16,6 +16,7 @@ export const ArrowLink: React.FC<ArrowLinkProps> = ({ href, tone = "light", clas
   return (
     <Link
       href={href}
+      suppressHydrationWarning
       className={cn(
         "group inline-flex items-center gap-3 rounded font-sans text-[16px] font-semibold transition-colors",
         dark ? "text-paper hover:text-orange" : "text-purple-700 hover:text-purple",

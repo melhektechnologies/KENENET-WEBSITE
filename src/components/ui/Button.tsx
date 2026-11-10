@@ -30,7 +30,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
   ) => {
     // Two-tone focus ring (offset + brand ring) stays visible on light AND dark bands.
     const baseStyles =
-      "group inline-flex items-center justify-center font-sans font-semibold rounded-lg select-none transition-[transform,box-shadow,background-color,border-color,color] duration-300 ease-emphasis focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 motion-safe:active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
+      "group inline-flex items-center justify-center font-sans font-semibold rounded-lg transition-[transform,box-shadow,background-color,border-color,color] duration-300 ease-emphasis focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 motion-safe:active:scale-[0.985] disabled:pointer-events-none disabled:opacity-50";
 
     const sizeStyles = {
       sm: "h-10 px-4 text-[15px] gap-2.5",
@@ -82,6 +82,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
       return (
         <Link
           href={href}
+          suppressHydrationWarning
           className={combinedClassName}
           onClick={onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>}
           ref={ref as React.Ref<HTMLAnchorElement>}
@@ -95,6 +96,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
     return (
       <button
         ref={ref as React.Ref<HTMLButtonElement>}
+        suppressHydrationWarning
         className={combinedClassName}
         disabled={disabled || loading}
         onClick={onClick}

@@ -69,6 +69,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${newsreader.variable} ${sourceSans3.variable} scroll-smooth bg-paper`}
     >
       <head>
@@ -77,7 +78,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       </head>
-      <body className="min-h-screen flex flex-col font-sans bg-paper text-ink antialiased">
+      <body suppressHydrationWarning className="min-h-screen flex flex-col font-sans bg-paper text-ink antialiased">
         <SkipLink />
         <SiteHeader />
         <main id="main" className="flex-1">
